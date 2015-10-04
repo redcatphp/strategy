@@ -4,12 +4,16 @@ Dependency Injection Container made Universal
 Substantially
 -------------
 
-Hardcoded way:  ```php
+Hardcoded way:
+```php
 $a = new A(new B, new C, new D(new E, new F));
-    ```
-Kinetic way:  ```php
+```
+
+Kinetic way:
+```php
 $a = $di->create('A');
-        ```
+```
+ 
  By dint of [reverse engineering](https://en.wikipedia.org/wiki/Reverse_engineering) practiced by [php reflection](http://php.net/manual/en/book.reflection.php), all the dependencies, and, recursively, dependencies of those dependencies, are automatically resolved !
 
 Summary
