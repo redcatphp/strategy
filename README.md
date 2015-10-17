@@ -25,38 +25,38 @@ $a = $di->create('A');
 Summary
 -------
 
-1. [Notes about Kinetic](http://wildsurikat.com/Documentation/Kinetic-Dependency-Injection#about)
-	1. [Origin](http://wildsurikat.com/Documentation/Kinetic-Dependency-Injection#origin)
-	2. [Differences](http://wildsurikat.com/Documentation/Kinetic-Dependency-Injection#differences)
-2. [Paradigm](http://wildsurikat.com/Documentation/Kinetic-Dependency-Injection#paradigm)
-	1. [Simplify your code](http://wildsurikat.com/Documentation/Kinetic-Dependency-Injection#simplify)
-	2. [Improve maintainability](http://wildsurikat.com/Documentation/Kinetic-Dependency-Injection#maintainability)
-	3. [Improve scalability](http://wildsurikat.com/Documentation/Kinetic-Dependency-Injection#scalability)
-	4. [Be Wise](http://wildsurikat.com/Documentation/Kinetic-Dependency-Injection#be-wise)
-3. [Get Started](http://wildsurikat.com/Documentation/Kinetic-Dependency-Injection#get-started)
-	1. [Di instanciation](http://wildsurikat.com/Documentation/Kinetic-Dependency-Injection#di-instanciation)
-	2. [Classes instanciation](http://wildsurikat.com/Documentation/Kinetic-Dependency-Injection#classes-instanciation)
-4. [Basic usage](http://wildsurikat.com/Documentation/Kinetic-Dependency-Injection#basic-usage)
-	1. [Object graph creation](http://wildsurikat.com/Documentation/Kinetic-Dependency-Injection#basic-usage-1)
-	2. [Providing additional arguments to constructors](http://wildsurikat.com/Documentation/Kinetic-Dependency-Injection#basic-usage-2)
-5. [Shared dependencies](http://wildsurikat.com/Documentation/Kinetic-Dependency-Injection#shared-dependencies)
-	1. [Using rules to configure shared dependencies](http://wildsurikat.com/Documentation/Kinetic-Dependency-Injection#shared-dependencies)
-6. [Configuring the container with rules](http://wildsurikat.com/Documentation/Kinetic-Dependency-Injection#config-rules)
-	1. [Substitutions](http://wildsurikat.com/Documentation/Kinetic-Dependency-Injection#config-rules-substitutions)
-	2. [Inheritance](http://wildsurikat.com/Documentation/Kinetic-Dependency-Injection#config-rules-inheritance)
-	3. [Constructor Parameters](http://wildsurikat.com/Documentation/Kinetic-Dependency-Injection#config-rules-constructor)
-	4. [Setter injection (mutators)](http://wildsurikat.com/Documentation/Kinetic-Dependency-Injection#config-rules-mutators)
-	5. [Default rules](http://wildsurikat.com/Documentation/Kinetic-Dependency-Injection#config-rules-default)
-	6. [Named instances](http://wildsurikat.com/Documentation/Kinetic-Dependency-Injection#config-rules-named)
-	7. [Sharing instances across a tree](http://wildsurikat.com/Documentation/Kinetic-Dependency-Injection#config-rules-tree)
-7. [Rule cascading](http://wildsurikat.com/Documentation/Kinetic-Dependency-Injection#cascading-rules)
-8. [Arbitrary Data](http://wildsurikat.com/Documentation/Kinetic-Dependency-Injection#arbitrary-data)
-	1. [Simple variable definition](http://wildsurikat.com/Documentation/Kinetic-Dependency-Injection#simple-variable)
-	2. [Anonymous functions](http://wildsurikat.com/Documentation/Kinetic-Dependency-Injection#anonymous-functions)
-	3. [Defining factories manually](http://wildsurikat.com/Documentation/Kinetic-Dependency-Injection#manual-factory)
-	4. [Protecting anonymous functions](http://wildsurikat.com/Documentation/Kinetic-Dependency-Injection#protecting-anonymous)
-	5. [Extend definitions](http://wildsurikat.com/Documentation/Kinetic-Dependency-Injection#extend-definitions)
-9. [PHP Config](http://wildsurikat.com/Documentation/Kinetic-Dependency-Injection#php-config)
+1. [Notes about Kinetic](http://wildsurikat.com/kinetic-dependency-injection#about)
+	1. [Origin](http://wildsurikat.com/kinetic-dependency-injection#origin)
+	2. [Differences](http://wildsurikat.com/kinetic-dependency-injection#differences)
+2. [Paradigm](http://wildsurikat.com/kinetic-dependency-injection#paradigm)
+	1. [Simplify your code](http://wildsurikat.com/kinetic-dependency-injection#simplify)
+	2. [Improve maintainability](http://wildsurikat.com/kinetic-dependency-injection#maintainability)
+	3. [Improve scalability](http://wildsurikat.com/kinetic-dependency-injection#scalability)
+	4. [Be Wise](http://wildsurikat.com/kinetic-dependency-injection#be-wise)
+3. [Get Started](http://wildsurikat.com/kinetic-dependency-injection#get-started)
+	1. [Di instanciation](http://wildsurikat.com/kinetic-dependency-injection#di-instanciation)
+	2. [Classes instanciation](http://wildsurikat.com/kinetic-dependency-injection#classes-instanciation)
+4. [Basic usage](http://wildsurikat.com/kinetic-dependency-injection#basic-usage)
+	1. [Object graph creation](http://wildsurikat.com/kinetic-dependency-injection#basic-usage-1)
+	2. [Providing additional arguments to constructors](http://wildsurikat.com/kinetic-dependency-injection#basic-usage-2)
+5. [Shared dependencies](http://wildsurikat.com/kinetic-dependency-injection#shared-dependencies)
+	1. [Using rules to configure shared dependencies](http://wildsurikat.com/kinetic-dependency-injection#shared-dependencies)
+6. [Configuring the container with rules](http://wildsurikat.com/kinetic-dependency-injection#config-rules)
+	1. [Substitutions](http://wildsurikat.com/kinetic-dependency-injection#config-rules-substitutions)
+	2. [Inheritance](http://wildsurikat.com/kinetic-dependency-injection#config-rules-inheritance)
+	3. [Constructor Parameters](http://wildsurikat.com/kinetic-dependency-injection#config-rules-constructor)
+	4. [Setter injection (mutators)](http://wildsurikat.com/kinetic-dependency-injection#config-rules-mutators)
+	5. [Default rules](http://wildsurikat.com/kinetic-dependency-injection#config-rules-default)
+	6. [Named instances](http://wildsurikat.com/kinetic-dependency-injection#config-rules-named)
+	7. [Sharing instances across a tree](http://wildsurikat.com/kinetic-dependency-injection#config-rules-tree)
+7. [Rule cascading](http://wildsurikat.com/kinetic-dependency-injection#cascading-rules)
+8. [Arbitrary Data](http://wildsurikat.com/kinetic-dependency-injection#arbitrary-data)
+	1. [Simple variable definition](http://wildsurikat.com/kinetic-dependency-injection#simple-variable)
+	2. [Anonymous functions](http://wildsurikat.com/kinetic-dependency-injection#anonymous-functions)
+	3. [Defining factories manually](http://wildsurikat.com/kinetic-dependency-injection#manual-factory)
+	4. [Protecting anonymous functions](http://wildsurikat.com/kinetic-dependency-injection#protecting-anonymous)
+	5. [Extend definitions](http://wildsurikat.com/kinetic-dependency-injection#extend-definitions)
+9. [PHP Config](http://wildsurikat.com/kinetic-dependency-injection#php-config)
 
 1. Notes about Kinetic
 ----------------------
@@ -424,7 +424,7 @@ echo $a3->pseudo; // "Wild"
 
 ### 5.1 Using rules to configure shared dependencies
 
- The method of defining shared objects is by Rules. See the section on [Rules](http://wildsurikat.com/Documentation/Kinetic-Dependency-Injection#config-rules) below for more information. They are used to configure the container. Here's how a shared object is defined using a rule.
+ The method of defining shared objects is by Rules. See the section on [Rules](http://wildsurikat.com/kinetic-dependency-injection#config-rules) below for more information. They are used to configure the container. Here's how a shared object is defined using a rule.
 
  Kinetic accepts a rule for a given class an applies it each time it creates an instance of that class. A rule is an array with a set of options that will be applied when an instance is requested from the container.
 
@@ -502,7 +502,7 @@ var\_dump($myotherobj->pdo === $myobj->pdo); //TRUE
 ```
 
 
- The *construct* rule has been added to ensure that every time an instance of PDO is created, it's given a set of constructor arguments. See the section on [construct](http://wildsurikat.com/Documentation/Kinetic-Dependency-Injection#config-rules-constructor) for more information.
+ The *construct* rule has been added to ensure that every time an instance of PDO is created, it's given a set of constructor arguments. See the section on [construct](http://wildsurikat.com/kinetic-dependency-injection#config-rules-constructor) for more information.
 
  Kinetic specificity  
  The global instance of *Wild\\Kinetic\\Di* class is naturally shared.
@@ -530,13 +530,13 @@ $a = $di->create('A');
 
  Kinetic Rules can be configured with these properties:
 
-- **shared** (*boolean*) - Whether a single instance is used throughout the container. [View Example](http://wildsurikat.com/Documentation/Kinetic-Dependency-Injection#shared-dependencies-rule)
-- **inherit** (*boolean*) - Whether the rule will also apply to subclasses (defaults to true). [View Example](http://wildsurikat.com/Documentation/Kinetic-Dependency-Injection#config-rules-inheritance)
-- **construct** (*array*) - Additional parameters passed to the constructor. [View Example](http://wildsurikat.com/Documentation/Kinetic-Dependency-Injection#config-rules-constructor)
-- **substitutions** (*array*) - key->value substitutions for dependencies. [View Example](http://wildsurikat.com/Documentation/Kinetic-Dependency-Injection#config-rules-substitutions)
-- **call** (*multidimensional array*) - A list of methods and their arguments which will be called after the object has been constructed. [View Example](http://wildsurikat.com/Documentation/Kinetic-Dependency-Injection#config-rules-shared)
-- **instanceOf** (*string*) - The name of the class to initiate. Used when the class name is not passed to $di->addRule(). [View Example](http://wildsurikat.com/Documentation/Kinetic-Dependency-Injection#config-rules-named)
-- **shareInstances** (*array*) - A list of class names that will be shared throughout a single object tree. [View Example](http://wildsurikat.com/Documentation/Kinetic-Dependency-Injection#config-rules-tree)
+- **shared** (*boolean*) - Whether a single instance is used throughout the container. [View Example](http://wildsurikat.com/kinetic-dependency-injection#shared-dependencies-rule)
+- **inherit** (*boolean*) - Whether the rule will also apply to subclasses (defaults to true). [View Example](http://wildsurikat.com/kinetic-dependency-injection#config-rules-inheritance)
+- **construct** (*array*) - Additional parameters passed to the constructor. [View Example](http://wildsurikat.com/kinetic-dependency-injection#config-rules-constructor)
+- **substitutions** (*array*) - key->value substitutions for dependencies. [View Example](http://wildsurikat.com/kinetic-dependency-injection#config-rules-substitutions)
+- **call** (*multidimensional array*) - A list of methods and their arguments which will be called after the object has been constructed. [View Example](http://wildsurikat.com/kinetic-dependency-injection#config-rules-shared)
+- **instanceOf** (*string*) - The name of the class to initiate. Used when the class name is not passed to $di->addRule(). [View Example](http://wildsurikat.com/kinetic-dependency-injection#config-rules-named)
+- **shareInstances** (*array*) - A list of class names that will be shared throughout a single object tree. [View Example](http://wildsurikat.com/kinetic-dependency-injection#config-rules-tree)
 
 ### 6.1 Substitutions
 
@@ -627,7 +627,7 @@ $a = $di->create('A');
 ```
 
 
-3. Named instances. See the section on [Named instances](http://wildsurikat.com/Documentation/Kinetic-Dependency-Injection#config-rules-named) for a more detailed explanation of how this works.
+3. Named instances. See the section on [Named instances](http://wildsurikat.com/kinetic-dependency-injection#config-rules-named) for a more detailed explanation of how this works.
 
  
 ```php
@@ -1105,7 +1105,7 @@ $di->addRule('B', ['construct' => ['foo']]);
 ```
 
 
-Because B inherits A, rules applied to A will applied to B (this behaviour can be turned off, [see the section on inheritance](http://wildsurikat.com/Documentation/Kinetic-Dependency-Injection#config-rules-inheritance)) so in this instance, B will be both shared and have the constructor parameters set.
+Because B inherits A, rules applied to A will applied to B (this behaviour can be turned off, [see the section on inheritance](http://wildsurikat.com/kinetic-dependency-injection#config-rules-inheritance)) so in this instance, B will be both shared and have the constructor parameters set.
 
 However if required, shared can be turned off for B:
 
@@ -1133,7 +1133,7 @@ And this keep A shared, but turn it off for the subclass B.
 ----------------
 
  These features comes from [Pimple](http://pimple.sensiolabs.org) .  
- Arbitrary variables are used for share specific config across a whole application. You can also use them for bring very specific higher flexibility to factories, it can be convenient sometimes, but this practice can be considered here as an anti-pattern and you can avoid this most of time using [rules](http://wildsurikat.com/Documentation/Kinetic-Dependency-Injection#config-rules).
+ Arbitrary variables are used for share specific config across a whole application. You can also use them for bring very specific higher flexibility to factories, it can be convenient sometimes, but this practice can be considered here as an anti-pattern and you can avoid this most of time using [rules](http://wildsurikat.com/kinetic-dependency-injection#config-rules).
 
  All the [Pimple](http://pimple.sensiolabs.org) API is the same as on original doc except when you "offsetGet" an unexistant key it will be filled with $di->create($key).
 
@@ -1214,7 +1214,7 @@ $container->extend('session\_storage', function ($storage, $c) {
 
 ### defineClass
 
- You can use this API to automatically interchange constructor params or setters params by name with arbitrary variables setted in Kinetic (see [arbitrary data](http://wildsurikat.com/Documentation/Kinetic-Dependency-Injection#arbitrary-data)).   
+ You can use this API to automatically interchange constructor params or setters params by name with arbitrary variables setted in Kinetic (see [arbitrary data](http://wildsurikat.com/kinetic-dependency-injection#arbitrary-data)).   
  It's a convenient way to decouple somes common configuration variables from classes rules definitions.  
  By prefixing an associative or numeric key of array with "*$*", the value will be used to point the variable that have to be used instead. You can use a "*.*" (dot) in the pointer to traverse an array.   
 Let's take an example:   
