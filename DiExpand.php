@@ -6,9 +6,9 @@
  * @version 1.4
  * @link http://github.com/surikat/Wire/
  * @author Jo Surikat <jo@surikat.pro>
- * @website http://wildsurikat.com
+ * @website http://redcatphp.com
  */
-namespace Wild\Wire;
+namespace RedCat\Wire;
 class DiExpand{
 	private $x;
 	function __construct($x,$params=[]){

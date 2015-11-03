@@ -9,7 +9,7 @@
 		{
 			"name": "Jo Surikat",
 			"email": "jo@surikat.pro",
-			"homepage": "http://wildsurikat.com/wire-dependency-injection",
+			"homepage": "http://redcatphp.com/wire-dependency-injection",
 			"role": "Developer"
 		}
 	],
@@ -18,7 +18,7 @@
 	},
 	"autoload": {
 		"psr-4":{
-			"Wild\\Wire\\": ""
+			"RedCat\\Wire\\": ""
 		}
 	},
 	"minimum-stability": "dev",
