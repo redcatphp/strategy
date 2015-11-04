@@ -25,38 +25,38 @@ $a = $di->create('A');
 Summary
 -------
 
-1. [Notes about Wire](http://wildsurikat.com/wire-dependency-injection#about)
-	1. [Origin](http://wildsurikat.com/wire-dependency-injection#origin)
-	2. [Differences](http://wildsurikat.com/wire-dependency-injection#differences)
-2. [Paradigm](http://wildsurikat.com/wire-dependency-injection#paradigm)
-	1. [Simplify your code](http://wildsurikat.com/wire-dependency-injection#simplify)
-	2. [Improve maintainability](http://wildsurikat.com/wire-dependency-injection#maintainability)
-	3. [Improve scalability](http://wildsurikat.com/wire-dependency-injection#scalability)
-	4. [Be Wise](http://wildsurikat.com/wire-dependency-injection#be-wise)
-3. [Get Started](http://wildsurikat.com/wire-dependency-injection#get-started)
-	1. [Di instanciation](http://wildsurikat.com/wire-dependency-injection#di-instanciation)
-	2. [Classes instanciation](http://wildsurikat.com/wire-dependency-injection#classes-instanciation)
-4. [Basic usage](http://wildsurikat.com/wire-dependency-injection#basic-usage)
-	1. [Object graph creation](http://wildsurikat.com/wire-dependency-injection#basic-usage-1)
-	2. [Providing additional arguments to constructors](http://wildsurikat.com/wire-dependency-injection#basic-usage-2)
-5. [Shared dependencies](http://wildsurikat.com/wire-dependency-injection#shared-dependencies)
-	1. [Using rules to configure shared dependencies](http://wildsurikat.com/wire-dependency-injection#shared-dependencies)
-6. [Configuring the container with rules](http://wildsurikat.com/wire-dependency-injection#config-rules)
-	1. [Substitutions](http://wildsurikat.com/wire-dependency-injection#config-rules-substitutions)
-	2. [Inheritance](http://wildsurikat.com/wire-dependency-injection#config-rules-inheritance)
-	3. [Constructor Parameters](http://wildsurikat.com/wire-dependency-injection#config-rules-constructor)
-	4. [Setter injection (mutators)](http://wildsurikat.com/wire-dependency-injection#config-rules-mutators)
-	5. [Default rules](http://wildsurikat.com/wire-dependency-injection#config-rules-default)
-	6. [Named instances](http://wildsurikat.com/wire-dependency-injection#config-rules-named)
-	7. [Sharing instances across a tree](http://wildsurikat.com/wire-dependency-injection#config-rules-tree)
-7. [Rule cascading](http://wildsurikat.com/wire-dependency-injection#cascading-rules)
-8. [Arbitrary Data](http://wildsurikat.com/wire-dependency-injection#arbitrary-data)
-	1. [Simple variable definition](http://wildsurikat.com/wire-dependency-injection#simple-variable)
-	2. [Anonymous functions](http://wildsurikat.com/wire-dependency-injection#anonymous-functions)
-	3. [Defining factories manually](http://wildsurikat.com/wire-dependency-injection#manual-factory)
-	4. [Protecting anonymous functions](http://wildsurikat.com/wire-dependency-injection#protecting-anonymous)
-	5. [Extend definitions](http://wildsurikat.com/wire-dependency-injection#extend-definitions)
-9. [PHP Config](http://wildsurikat.com/wire-dependency-injection#php-config)
+1. [Notes about Wire](http://redcatphp.com/wire-dependency-injection#about)
+	1. [Origin](http://redcatphp.com/wire-dependency-injection#origin)
+	2. [Differences](http://redcatphp.com/wire-dependency-injection#differences)
+2. [Paradigm](http://redcatphp.com/wire-dependency-injection#paradigm)
+	1. [Simplify your code](http://redcatphp.com/wire-dependency-injection#simplify)
+	2. [Improve maintainability](http://redcatphp.com/wire-dependency-injection#maintainability)
+	3. [Improve scalability](http://redcatphp.com/wire-dependency-injection#scalability)
+	4. [Be Wise](http://redcatphp.com/wire-dependency-injection#be-wise)
+3. [Get Started](http://redcatphp.com/wire-dependency-injection#get-started)
+	1. [Di instanciation](http://redcatphp.com/wire-dependency-injection#di-instanciation)
+	2. [Classes instanciation](http://redcatphp.com/wire-dependency-injection#classes-instanciation)
+4. [Basic usage](http://redcatphp.com/wire-dependency-injection#basic-usage)
+	1. [Object graph creation](http://redcatphp.com/wire-dependency-injection#basic-usage-1)
+	2. [Providing additional arguments to constructors](http://redcatphp.com/wire-dependency-injection#basic-usage-2)
+5. [Shared dependencies](http://redcatphp.com/wire-dependency-injection#shared-dependencies)
+	1. [Using rules to configure shared dependencies](http://redcatphp.com/wire-dependency-injection#shared-dependencies)
+6. [Configuring the container with rules](http://redcatphp.com/wire-dependency-injection#config-rules)
+	1. [Substitutions](http://redcatphp.com/wire-dependency-injection#config-rules-substitutions)
+	2. [Inheritance](http://redcatphp.com/wire-dependency-injection#config-rules-inheritance)
+	3. [Constructor Parameters](http://redcatphp.com/wire-dependency-injection#config-rules-constructor)
+	4. [Setter injection (mutators)](http://redcatphp.com/wire-dependency-injection#config-rules-mutators)
+	5. [Default rules](http://redcatphp.com/wire-dependency-injection#config-rules-default)
+	6. [Named instances](http://redcatphp.com/wire-dependency-injection#config-rules-named)
+	7. [Sharing instances across a tree](http://redcatphp.com/wire-dependency-injection#config-rules-tree)
+7. [Rule cascading](http://redcatphp.com/wire-dependency-injection#cascading-rules)
+8. [Arbitrary Data](http://redcatphp.com/wire-dependency-injection#arbitrary-data)
+	1. [Simple variable definition](http://redcatphp.com/wire-dependency-injection#simple-variable)
+	2. [Anonymous functions](http://redcatphp.com/wire-dependency-injection#anonymous-functions)
+	3. [Defining factories manually](http://redcatphp.com/wire-dependency-injection#manual-factory)
+	4. [Protecting anonymous functions](http://redcatphp.com/wire-dependency-injection#protecting-anonymous)
+	5. [Extend definitions](http://redcatphp.com/wire-dependency-injection#extend-definitions)
+9. [PHP Config](http://redcatphp.com/wire-dependency-injection#php-config)
 
 1. Notes about Wire
 ----------------------
@@ -382,32 +382,32 @@ class A {
 }  
   
 $a1 = $di->create('A', [ //order of associative keys doesn't matter  
-    'lastname'=>'Surikat'  
+    'lastname'=>'RedCat'  
     'name'=>'Jo',  
-    'pseudo'=>'Wild',  
+    'pseudo'=>'Surikat',  
 ]);  
 $a2 = $di->create('A', [  
+    'RedCat',  
     'Surikat'  
-    'Wild',  
     'name'=>'Jo', //order of associative key doesn't matter  
 ]);  
 $a3 = $di->create('A', [  
     'Jo',  
-    'lastname'=>'Surikat' //order of associative key doesn't matter  
-    'Wild',  
+    'lastname'=>'RedCat' //order of associative key doesn't matter  
+    'Surikat',  
 ]);  
   
 echo $a1->name; // "Jo"  
-echo $a1->lastname; // "Surikat"  
-echo $a1->pseudo; // "Wild"  
+echo $a1->lastname; // "RedCat"  
+echo $a1->pseudo; // "Surikat"  
   
 echo $a2->name; // "Jo"  
-echo $a2->lastname; // "Surikat"  
-echo $a2->pseudo; // "Wild"  
+echo $a2->lastname; // "RedCat"  
+echo $a2->pseudo; // "Surikat"  
   
 echo $a3->name; // "Jo"  
-echo $a3->lastname; // "Surikat"  
-echo $a3->pseudo; // "Wild"  
+echo $a3->lastname; // "RedCat"  
+echo $a3->pseudo; // "Surikat"
         
 ```
   
@@ -424,7 +424,7 @@ echo $a3->pseudo; // "Wild"
 
 ### 5.1 Using rules to configure shared dependencies
 
- The method of defining shared objects is by Rules. See the section on [Rules](http://wildsurikat.com/wire-dependency-injection#config-rules) below for more information. They are used to configure the container. Here's how a shared object is defined using a rule.
+ The method of defining shared objects is by Rules. See the section on [Rules](http://redcatphp.com/wire-dependency-injection#config-rules) below for more information. They are used to configure the container. Here's how a shared object is defined using a rule.
 
  Wire accepts a rule for a given class an applies it each time it creates an instance of that class. A rule is an array with a set of options that will be applied when an instance is requested from the container.
 
@@ -502,10 +502,10 @@ var\_dump($myotherobj->pdo === $myobj->pdo); //TRUE
 ```
 
 
- The *construct* rule has been added to ensure that every time an instance of PDO is created, it's given a set of constructor arguments. See the section on [construct](http://wildsurikat.com/wire-dependency-injection#config-rules-constructor) for more information.
+ The *construct* rule has been added to ensure that every time an instance of PDO is created, it's given a set of constructor arguments. See the section on [construct](http://redcatphp.com/wire-dependency-injection#config-rules-constructor) for more information.
 
  Wire specificity  
- The global instance of *Wild\\Wire\\Di* class is naturally shared.
+ The global instance of *RedCat\\Wire\\Di* class is naturally shared.
 
 6. Configuring the container with Rules
 ---------------------------------------
@@ -530,13 +530,13 @@ $a = $di->create('A');
 
  Wire Rules can be configured with these properties:
 
-- **shared** (*boolean*) - Whether a single instance is used throughout the container. [View Example](http://wildsurikat.com/wire-dependency-injection#shared-dependencies-rule)
-- **inherit** (*boolean*) - Whether the rule will also apply to subclasses (defaults to true). [View Example](http://wildsurikat.com/wire-dependency-injection#config-rules-inheritance)
-- **construct** (*array*) - Additional parameters passed to the constructor. [View Example](http://wildsurikat.com/wire-dependency-injection#config-rules-constructor)
-- **substitutions** (*array*) - key->value substitutions for dependencies. [View Example](http://wildsurikat.com/wire-dependency-injection#config-rules-substitutions)
-- **call** (*multidimensional array*) - A list of methods and their arguments which will be called after the object has been constructed. [View Example](http://wildsurikat.com/wire-dependency-injection#config-rules-shared)
-- **instanceOf** (*string*) - The name of the class to initiate. Used when the class name is not passed to $di->addRule(). [View Example](http://wildsurikat.com/wire-dependency-injection#config-rules-named)
-- **shareInstances** (*array*) - A list of class names that will be shared throughout a single object tree. [View Example](http://wildsurikat.com/wire-dependency-injection#config-rules-tree)
+- **shared** (*boolean*) - Whether a single instance is used throughout the container. [View Example](http://redcatphp.com/wire-dependency-injection#shared-dependencies-rule)
+- **inherit** (*boolean*) - Whether the rule will also apply to subclasses (defaults to true). [View Example](http://redcatphp.com/wire-dependency-injection#config-rules-inheritance)
+- **construct** (*array*) - Additional parameters passed to the constructor. [View Example](http://redcatphp.com/wire-dependency-injection#config-rules-constructor)
+- **substitutions** (*array*) - key->value substitutions for dependencies. [View Example](http://redcatphp.com/wire-dependency-injection#config-rules-substitutions)
+- **call** (*multidimensional array*) - A list of methods and their arguments which will be called after the object has been constructed. [View Example](http://redcatphp.com/wire-dependency-injection#config-rules-shared)
+- **instanceOf** (*string*) - The name of the class to initiate. Used when the class name is not passed to $di->addRule(). [View Example](http://redcatphp.com/wire-dependency-injection#config-rules-named)
+- **shareInstances** (*array*) - A list of class names that will be shared throughout a single object tree. [View Example](http://redcatphp.com/wire-dependency-injection#config-rules-tree)
 
 ### 6.1 Substitutions
 
@@ -579,7 +579,7 @@ $a = $di->create('A');
 
  Wire specificity  
 *['instance' => 'name'] syntax* was removed because it was not compatible with associative array of arguments and not very consistent in some other cases and it was replaced by DiExpand object that can act like a lazy instanciator, or lazy callback resolver if you pass a Closure (anonymous function) to it.  
- To use it, simply instanciate it by is full class name *new \\Wild\\Wire\\DiExpand()* or by call *use Wild\\Wire\\DiExpand;* at top of your code so you can use just *new DiExpand()* throughout the following code.
+ To use it, simply instanciate it by is full class name *new \\RedCat\\Wire\\DiExpand()* or by call *use RedCat\\Wire\\DiExpand;* at top of your code so you can use just *new DiExpand()* throughout the following code.
 
  The new DiExpand('B') object is used to tell Wire to create an instance of 'B' in place of 'Iterator'. *new DiExpand('B')* can be read as 'An instance of B created by the Wire'.
 
@@ -627,7 +627,7 @@ $a = $di->create('A');
 ```
 
 
-3. Named instances. See the section on [Named instances](http://wildsurikat.com/wire-dependency-injection#config-rules-named) for a more detailed explanation of how this works.
+3. Named instances. See the section on [Named instances](http://redcatphp.com/wire-dependency-injection#config-rules-named) for a more detailed explanation of how this works.
 
  
 ```php
@@ -1105,7 +1105,7 @@ $di->addRule('B', ['construct' => ['foo']]);
 ```
 
 
-Because B inherits A, rules applied to A will applied to B (this behaviour can be turned off, [see the section on inheritance](http://wildsurikat.com/wire-dependency-injection#config-rules-inheritance)) so in this instance, B will be both shared and have the constructor parameters set.
+Because B inherits A, rules applied to A will applied to B (this behaviour can be turned off, [see the section on inheritance](http://redcatphp.com/wire-dependency-injection#config-rules-inheritance)) so in this instance, B will be both shared and have the constructor parameters set.
 
 However if required, shared can be turned off for B:
 
@@ -1133,7 +1133,7 @@ And this keep A shared, but turn it off for the subclass B.
 ----------------
 
  These features comes from [Pimple](http://pimple.sensiolabs.org) .  
- Arbitrary variables are used for share specific config across a whole application. You can also use them for bring very specific higher flexibility to factories, it can be convenient sometimes, but this practice can be considered here as an anti-pattern and you can avoid this most of time using [rules](http://wildsurikat.com/wire-dependency-injection#config-rules).
+ Arbitrary variables are used for share specific config across a whole application. You can also use them for bring very specific higher flexibility to factories, it can be convenient sometimes, but this practice can be considered here as an anti-pattern and you can avoid this most of time using [rules](http://redcatphp.com/wire-dependency-injection#config-rules).
 
  All the [Pimple](http://pimple.sensiolabs.org) API is the same as on original doc except when you "offsetGet" an unexistant key it will be filled with $di->create($key).
 
@@ -1214,7 +1214,7 @@ $container->extend('session\_storage', function ($storage, $c) {
 
 ### defineClass
 
- You can use this API to automatically interchange constructor params or setters params by name with arbitrary variables setted in Wire (see [arbitrary data](http://wildsurikat.com/wire-dependency-injection#arbitrary-data)).   
+ You can use this API to automatically interchange constructor params or setters params by name with arbitrary variables setted in Wire (see [arbitrary data](http://redcatphp.com/wire-dependency-injection#arbitrary-data)).   
  It's a convenient way to decouple somes common configuration variables from classes rules definitions.  
  By prefixing an associative or numeric key of array with "*$*", the value will be used to point the variable that have to be used instead. You can use a "*.*" (dot) in the pointer to traverse an array.   
 Let's take an example:   
@@ -1308,7 +1308,7 @@ $di->loadPhpMap([
 
  This is a static method operant on global instance of *Di*. You have to pass it a config map like with *loadPhpMap* but you also can pass a boolean to enable or disable the *frozen* mode and a path to store the *frozen* file. This is the last optimization step for server in production, it will backup the resolved config by serializing the Container so it will be faster to load. You'll have to delete your *frozen* file to update config if you change it. 
 ```php
-Wild\\Wire\\Di::load([  
+RedCat\\Wire\\Di::load([  
     '/path/to/default\_config.php',  
     '/path/to/config.php',  
 ],true,'temp-path/to/myApplyConfig.svar');  
