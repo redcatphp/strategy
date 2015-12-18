@@ -38,17 +38,20 @@ class Di implements \ArrayAccess{
 		return self::getInstance()->create($name, $args, $forceNewInstance, $share);
 	}
 	
-	static function load(array $map,$freeze=false,$file=null){
+	static function load($map,$freeze=null,$file=null){
+		if(!isset($freeze)){
+			$freeze = defined('REDCAT_WIRE_FREEZE')?REDCAT_WIRE_FREEZE:false;
+		}
 		if($freeze){
 			if(!isset($file)){
-				$file = __DIR__.'/'.__CLASS__.'.svar';
+				$file = getcwd().'/.tmp/redcat.svar';
 			}
 			if(is_file($file)){
 				self::$instance = unserialize(file_get_contents($file));
 				self::$instance->instances[__CLASS__] = self::$instance;
 			}
 			else{
-				self::getInstance()->loadPhpMap($map);
+				self::getInstance()->loadPhpMap((array)$map);
 				$dir = dirname($file);
 				if(!is_dir($dir))
 					@mkdir($dir,0777,true);
@@ -56,7 +59,7 @@ class Di implements \ArrayAccess{
 			}
 		}
 		else{
-			self::getInstance()->loadPhpMap($map);
+			self::getInstance()->loadPhpMap((array)$map);
 		}
 		return self::$instance;
 	}
@@ -456,7 +459,7 @@ class Di implements \ArrayAccess{
 			foreach($php['rules'] as $key=>$value)
 				$this->defineClass($key,$value);
 	}
-	function loadPhpMap($map){
+	function loadPhpMap(array $map){
 		$map = array_map([$this,'phpLoadFile'],$map);
 		array_map([$this,'loadPhpVar'],$map);
 		array_map([$this,'loadPhpClass'],$map);
