@@ -12,7 +12,7 @@
  *		full registry implementation, freeze optimisation
  * 
  * @package Wire
- * @version 1.6
+ * @version 1.7
  * @link http://github.com/redcatphp/Wire/
  * @author Jo Surikat <jo@surikat.pro>
  * @website http://redcatphp.com
@@ -32,10 +32,10 @@ class Di implements \ArrayAccess{
 	private $cache = [];
 	private $instances = [];
 	
-	private static $instance;
+	protected static $instance;
 	
 	static function make($name, $args = [], $forceNewInstance = false, $share = []){
-		return self::getInstance()->create($name, $args, $forceNewInstance, $share);
+		return static::getInstance()->create($name, $args, $forceNewInstance, $share);
 	}
 	
 	static function load($map,$freeze=null,$file=null){
@@ -47,29 +47,29 @@ class Di implements \ArrayAccess{
 				$file = getcwd().'/.tmp/redcat.svar';
 			}
 			if(is_file($file)){
-				self::$instance = unserialize(file_get_contents($file));
-				self::$instance->instances[__CLASS__] = self::$instance;
+				static::$instance = unserialize(file_get_contents($file));
+				static::$instance->instances[__CLASS__] = static::$instance;
 			}
 			else{
-				self::getInstance()->loadPhpMap((array)$map);
+				static::getInstance()->loadPhpMap((array)$map);
 				$dir = dirname($file);
 				if(!is_dir($dir))
 					@mkdir($dir,0777,true);
-				file_put_contents($file,serialize(self::$instance));
+				file_put_contents($file,serialize(static::$instance));
 			}
 		}
 		else{
-			self::getInstance()->loadPhpMap((array)$map);
+			static::getInstance()->loadPhpMap((array)$map);
 		}
-		return self::$instance;
+		return static::$instance;
 	}
 	
 	static function getInstance(){
-		if(!isset(self::$instance)){
-			self::$instance = new self;
-			self::$instance->instances[__CLASS__] = self::$instance;
+		if(!isset(static::$instance)){
+			static::$instance = new static;
+			static::$instance->instances[get_called_class()] = static::$instance;
 		}
-		return self::$instance;
+		return static::$instance;
 	}
 		
 	function __construct(array $values = []){
