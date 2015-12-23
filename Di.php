@@ -465,9 +465,26 @@ class Di implements \ArrayAccess{
 		array_map([$this,'loadPhpClass'],$map);
 	}
 	function loadPhpVar($php){
-		if(isset($php['$']))
-			foreach($php['$'] as $key=>$value)
+		if(isset($php['$'])){
+			$this->recursiveResolveVar($php['$']);
+			foreach($php['$'] as $key=>$value){
 				$this[$key] = $value;
+			}
+		}
+	}
+	protected function recursiveResolveVar(&$var){
+		if(is_array($var)){
+			foreach($var as $k=>&$v){
+				if(strpos($k,'$')===0){
+					unset($var[$k]);
+					$k = substr($k,1);
+					$var[$k] = $this->getDotOffset($v);
+				}
+				if(is_array($v)){
+					$this->recursiveResolveVar($v);
+				}
+			}
+		}
 	}
 	function loadPhpClass($php){
 		if(isset($php['rules']))
