@@ -27,6 +27,7 @@ class Di implements \ArrayAccess{
 	private $frozen = [];
 	private $raw = [];
 	private $keys = [];
+	private $mapCache = [];
 
 	private $rules = ['*' => ['shared' => false, 'construct' => [], 'shareInstances' => [], 'call' => [], 'inherit' => true, 'substitutions' => [], 'instanceOf' => null, 'newInstances' => []]];
 	private $cache = [];
@@ -467,14 +468,16 @@ class Di implements \ArrayAccess{
 	function loadPhpVar($php){
 		if(isset($php['$'])){
 			if(isset($php['$']['prependConfig'])){
-				array_map([$this,'loadPhpVar'],(array)$php['$']['prependConfig']);
+				$this->mapCache['prepend'] = array_map([$this,'phpLoadFile'],(array)$php['$']['prependConfig']);
+				array_map([$this,'loadPhpVar'],$this->mapCache['prepend']);
 			}
 			$this->recursiveResolveVar($php['$']);
 			foreach($php['$'] as $key=>$value){
 				$this[$key] = $value;
 			}
 			if(isset($php['$']['appendConfig'])){
-				array_map([$this,'loadPhpVar'],(array)$php['$']['appendConfig']);
+				$this->mapCache['append'] = array_map([$this,'phpLoadFile'],(array)$php['$']['appendConfig']);
+				array_map([$this,'loadPhpVar'],$this->mapCache['append']);
 			}
 		}
 	}
@@ -493,16 +496,20 @@ class Di implements \ArrayAccess{
 		}
 	}
 	function loadPhpClass($php){
-		if(isset($php['$']['prependConfig'])){
-			array_map([$this,'loadPhpClass'],(array)$php['$']['prependConfig']);
+		if(isset($this->mapCache['prepend'])){
+			$map = $this->mapCache['prepend'];
+			unset($this->mapCache['prepend']);
+			array_map([$this,'loadPhpClass'],$map);
 		}
 		
 		if(isset($php['rules']))
 			foreach($php['rules'] as $key=>$value)
 				$this->defineClass($key,$value);
 		
-		if(isset($php['$']['appendConfig'])){
-			array_map([$this,'loadPhpClass'],(array)$php['$']['appendConfig']);
+		if(isset($this->mapCache['append'])){
+			$map = $this->mapCache['append'];
+			unset($this->mapCache['append']);
+			array_map([$this,'loadPhpClass'],$map);
 		}
 	}
 	private function phpLoadFile($php){
