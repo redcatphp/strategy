@@ -4,12 +4,12 @@
 	"description": "Wire - Dependency Injection Made Universal",
 	"keywords": ["Wire","Dependency Injection","Configuration","Inversion of Control"],
 	"license": ["LGPL-3.0+","CC0-1.0"],
-	"homepage": "https://github.com/redcatphp/Wire",
+	"homepage": "http://redcatphp.com/wire-dependency-injection",
 	"authors": [
 		{
 			"name": "Jo Surikat",
 			"email": "jo@surikat.pro",
-			"homepage": "http://redcatphp.com/wire-dependency-injection",
+			"homepage": "http://surikat.pro",
 			"role": "Developer"
 		}
 	],
@@ -23,6 +23,6 @@
 	},
 	"minimum-stability": "dev",
 	"suggest": {
-		"redcatphp/autoload": "Enable autoloading of classes"
+		"redcatphp/autoload": "Classes autoload with PSR-4, PSR-0 and classes map features"
 	}
 }
