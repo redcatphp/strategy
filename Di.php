@@ -493,7 +493,7 @@ class Di implements \ArrayAccess{
 	}
 	private function phpLoadFile($php){
 		if(!is_array($php)&&is_file($php))
-			$php = include($php);
+			$php = includeFile($php);
 		return $php;
 	}
 	function defineClass($class,$rule){
@@ -600,4 +600,7 @@ class Di implements \ArrayAccess{
 		}
 		return $merged;
 	}
+}
+function includeFile($file){
+	return includeFile($file);
 }
