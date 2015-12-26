@@ -602,5 +602,5 @@ class Di implements \ArrayAccess{
 	}
 }
 function includeFile($file){
-	return includeFile($file);
+	return include($file);
 }
