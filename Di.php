@@ -466,9 +466,15 @@ class Di implements \ArrayAccess{
 	}
 	function loadPhpVar($php){
 		if(isset($php['$'])){
+			if(isset($php['$']['prependConfig'])){
+				array_map([$this,'loadPhpVar'],(array)$php['$']['prependConfig']);
+			}
 			$this->recursiveResolveVar($php['$']);
 			foreach($php['$'] as $key=>$value){
 				$this[$key] = $value;
+			}
+			if(isset($php['$']['appendConfig'])){
+				array_map([$this,'loadPhpVar'],(array)$php['$']['appendConfig']);
 			}
 		}
 	}
@@ -487,9 +493,17 @@ class Di implements \ArrayAccess{
 		}
 	}
 	function loadPhpClass($php){
+		if(isset($php['$']['prependConfig'])){
+			array_map([$this,'loadPhpClass'],(array)$php['$']['prependConfig']);
+		}
+		
 		if(isset($php['rules']))
 			foreach($php['rules'] as $key=>$value)
 				$this->defineClass($key,$value);
+		
+		if(isset($php['$']['appendConfig'])){
+			array_map([$this,'loadPhpClass'],(array)$php['$']['appendConfig']);
+		}
 	}
 	private function phpLoadFile($php){
 		if(!is_array($php)&&is_file($php))
