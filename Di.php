@@ -527,8 +527,13 @@ class Di implements \ArrayAccess{
 		if (isset($rule['substitutions'])){
 			$substitutions = $rule['substitutions'];
 			$rule['substitutions'] = [];
-			foreach ($substitutions as $as=>$use)
+			foreach ($substitutions as $as=>$use){
+				if(substr($as,0,1)==='$'){
+					$as = substr($as,1);
+					$use = $this->getDotOffset($use);
+				}
 				$rule['substitutions'][str_replace('/','\\',$as)] = is_string($use)?str_replace('/','\\',$use):$use;
+			}
 		}
 		if(isset($rule['construct'])){
 			$construct = $rule['construct'];
