@@ -518,8 +518,13 @@ class Di implements \ArrayAccess{
 		return $php;
 	}
 	function defineClass($class,$rule){
-		if(isset($rule['instanceOf'])&&is_string($rule['instanceOf']))
+		if(isset($rule['instanceOf'])&&is_string($rule['instanceOf'])){
 			$rule['instanceOf'] = str_replace('/','\\',$rule['instanceOf']);
+		}
+		elseif(isset($rule['$instanceOf'])&&is_string($rule['$instanceOf'])){
+			$rule['instanceOf'] = $this->getDotOffset($rule['$instanceOf']);
+			unset($rule['$instanceOf']);
+		}
 		if(isset($rule['newInstances'])&&is_string($rule['newInstances']))
 			$rule['newInstances'] = explode(',',str_replace('/','\\',$rule['newInstances']));
 		if(isset($rule['shareInstances'])&&is_string($rule['shareInstances']))
