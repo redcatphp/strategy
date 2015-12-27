@@ -534,7 +534,7 @@ class Di implements \ArrayAccess{
 			$construct = $rule['construct'];
 			$rule['construct'] = [];
 			foreach($construct as $key=>$param){
-				if(strpos($key,'$')===0){
+				if(substr($key,0,1)==='$'){
 					$key = substr($key,1);
 					$param = $this->getDotOffset($param);
 				}
@@ -545,7 +545,7 @@ class Di implements \ArrayAccess{
 			$construct = $rule['call'];
 			$rule['call'] = [];
 			foreach($construct as $key=>$param){
-				if(strpos($key,'$')===0){
+				if(substr($key,0,1)==='$'){
 					$key = substr($key,1);
 					$param = $this->getDotOffset($param);
 				}
