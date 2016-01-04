@@ -88,6 +88,8 @@ class Di implements \ArrayAccess{
 		$this->keys[$id] = true;
 	}
 	function offsetGet($id){
+		if(strpos($id,'.')!==false)
+			return $this->getDotOffset($id);
 		if(!isset($this->keys[$id])){
 			$this[$id] = $this->create($id);
 		}
@@ -100,7 +102,7 @@ class Di implements \ArrayAccess{
 				return $this->values[$id];
 		}
 		if (isset($this->factories[$this->values[$id]])) {
-				return $this->values[$id]($this);
+			return $this->values[$id]($this);
 		}
 		$raw = $this->values[$id];
 		$val = $this->values[$id] = $raw($this);
