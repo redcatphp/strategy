@@ -355,10 +355,11 @@ class Di implements \ArrayAccess{
 	private function getParams(\ReflectionMethod $method, array $rule) {
 		$paramInfo = [];
 		foreach ($method->getParameters() as $param){
-			try{
+			$type = $param->getType();
+			$class = $type&&!$type->isBuiltin()?(string)$type:null;
+			if($class&&class_exists($class)){				
 				$classObject = $param->getClass();
-				$class = $classObject ? $classObject->name : null;
-				if($class&&!array_key_exists($class, $rule['substitutions'])){
+				if(!array_key_exists($class, $rule['substitutions'])){
 					$classRule = $this->getRule($class);
 					if(isset($classRule['instanceOf'])){
 						if(is_string($classRule['instanceOf']))
@@ -370,9 +371,9 @@ class Di implements \ArrayAccess{
 					}
 				}
 			}
-			catch(\ReflectionException $e){
+			else{
 				if($param->allowsNull()) $class = null;
-				else throw $e;
+				else throw new \Exception('Class '.$class.' does not exist');
 			}
 			$paramInfo[] = [$class, $param->allowsNull(), array_key_exists($class, $rule['substitutions']), in_array($class, $rule['newInstances']),$param->getName(),$param->isDefaultValueAvailable()?$param->getDefaultValue():null];
 		}
