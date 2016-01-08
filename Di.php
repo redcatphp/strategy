@@ -371,7 +371,7 @@ class Di implements \ArrayAccess{
 					}
 				}
 			}
-			else{
+			elseif($class){
 				if($param->allowsNull()) $class = null;
 				else throw new \Exception('Class '.$class.' does not exist');
 			}
