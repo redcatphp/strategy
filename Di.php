@@ -21,6 +21,7 @@
 namespace RedCat\Wire;
 
 class Di implements \ArrayAccess{
+	private $php7;
 	private $values = [];
 	private $factories;
 	private $protected;
@@ -74,6 +75,7 @@ class Di implements \ArrayAccess{
 	}
 		
 	function __construct(array $values = []){
+		$this->php7 = version_compare(PHP_VERSION,'7','>=');
 		$this->factories = new \SplObjectStorage();
 		$this->protected = new \SplObjectStorage();
 		foreach ($values as $key => $value) {
@@ -355,8 +357,20 @@ class Di implements \ArrayAccess{
 	private function getParams(\ReflectionMethod $method, array $rule) {
 		$paramInfo = [];
 		foreach ($method->getParameters() as $param){
-			$type = $param->getType();
-			$class = $type&&!$type->isBuiltin()?(string)$type:null;
+			if($this->php7){
+				$type = $param->getType();
+				$class = $type&&!$type->isBuiltin()?(string)$type:null;
+			}
+			else{
+				try{
+					$classObject = $param->getClass();
+					$class = $classObject?$classObject->name:null;
+				}
+				catch(\ReflectionException $e){
+					if($param->allowsNull()) $class = null;
+					else throw $e;
+				}
+			}
 			if($class&&class_exists($class)){				
 				$classObject = $param->getClass();
 				if(!array_key_exists($class, $rule['substitutions'])){
