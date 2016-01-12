@@ -371,7 +371,7 @@ class Di implements \ArrayAccess{
 					else throw $e;
 				}
 			}
-			if($class&&class_exists($class)){				
+			if($class&&class_exists($class)||interface_exists($class)){
 				$classObject = $param->getClass();
 				if(!array_key_exists($class, $rule['substitutions'])){
 					$classRule = $this->getRule($class);
