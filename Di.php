@@ -609,6 +609,9 @@ class Di implements \ArrayAccess{
 			return $object;
 		});
 	}
+	function __invoke($name, $args = [], $forceNewInstance = false, $share = []){
+		return $this->create($name, $args, $forceNewInstance, $share);
+	}
 	private static function hashArguments($args){
 		static $storage = null;
 		if(!isset($storage))
