@@ -29,6 +29,7 @@ class Di implements \ArrayAccess{
 	private $raw = [];
 	private $keys = [];
 	private $mapCache = [];
+	private $hashArgumentsStorage;
 
 	private $rules = ['*' => ['shared' => false, 'construct' => [], 'shareInstances' => [], 'call' => [], 'method' => [], 'inherit' => true, 'substitutions' => [], 'instanceOf' => null, 'newInstances' => []]];
 	private $cache = [];
@@ -272,7 +273,7 @@ class Di implements \ArrayAccess{
 		if($p=strpos($name,':')){
 			$this->addRule($name,['instanceOf'=>substr($name,0,$p),'shared'=>true]);
 			if(substr($instance,$p+1)==='$')
-				$instance = $name.':'.self::hashArguments($args);
+				$instance = $name.':'.$this->hashArguments($args);
 		}
 		if(!$forceNewInstance&&isset($this->instances[$instance])) return $this->instances[$instance];
 		if(empty($this->cache[$name]))
@@ -284,7 +285,7 @@ class Di implements \ArrayAccess{
 		if(!isset($instance))
 			$instance = get_class($obj);
 		elseif(is_array($instance))
-			$instance = get_class($obj).':'.self::hashArguments($instance);
+			$instance = get_class($obj).':'.$this->hashArguments($instance);
 		$this->instances[$instance] = $obj;
 	}
 	function method($object,$func,array $args=[]){
@@ -626,18 +627,17 @@ class Di implements \ArrayAccess{
 	function __invoke($name, $args = [], $forceNewInstance = false, $share = []){
 		return $this->create($name, $args, $forceNewInstance, $share);
 	}
-	private static function hashArguments($args){
-		static $storage = null;
-		if(!isset($storage))
-			$storage = new \SplObjectStorage();
+	private function hashArguments($args){
+		if(!isset($this->hashArgumentsStorage))
+			$this->hashArgumentsStorage = new \SplObjectStorage();
 		$hash = [];
 		ksort($args);
 		foreach($args as $k=>$arg){
 			if(is_array($arg)){
-				$h = self::hashArguments($arg);
+				$h = $this->hashArguments($arg);
 			}
 			elseif(is_object($arg)){
-				$storage->attach($arg);
+				$this->hashArgumentsStorage->attach($arg);
 				$h = spl_object_hash($arg);
 			}
 			else{
