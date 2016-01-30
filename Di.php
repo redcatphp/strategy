@@ -272,7 +272,7 @@ class Di implements \ArrayAccess{
 		$instance = $name;
 		if($p=strpos($name,':')){
 			$this->addRule($name,['instanceOf'=>substr($name,0,$p),'shared'=>true]);
-			if(substr($instance,$p+1)==='$')
+			if(substr($instance,$p+1)==='#')
 				$instance = $name.':'.$this->hashArguments($args);
 		}
 		if(!$forceNewInstance&&isset($this->instances[$instance])) return $this->instances[$instance];
