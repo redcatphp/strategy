@@ -30,7 +30,7 @@ class Di implements \ArrayAccess{
 	private $keys = [];
 	private $mapCache = [];
 
-	private $rules = ['*' => ['shared' => false, 'construct' => [], 'shareInstances' => [], 'call' => [], 'inherit' => true, 'substitutions' => [], 'instanceOf' => null, 'newInstances' => []]];
+	private $rules = ['*' => ['shared' => false, 'construct' => [], 'shareInstances' => [], 'call' => [], 'method' => [], 'inherit' => true, 'substitutions' => [], 'instanceOf' => null, 'newInstances' => []]];
 	private $cache = [];
 	private $instances = [];
 	
@@ -287,7 +287,14 @@ class Di implements \ArrayAccess{
 			$instance = get_class($obj).':'.self::hashArguments($instance);
 		$this->instances[$instance] = $obj;
 	}
-	
+	function method($object,$func,array $args=[]){
+		if(!is_object($object))
+			$object = call_user_func_array([$this,'create'],(array)$object);
+		$class = get_class($object);
+		$reflectionClass = new \ReflectionClass($class);
+		$params = $this->getParams($reflectionClass->getMethod($func), $this->getRule($class))->__invoke($this->expand($args));
+		return call_user_func_array([$object,$func],$params);
+	}
 	private function getClosure($name, array $rule, $instance){
 		if(isset($rule['instanceOf'])&&is_object($rule['instanceOf'])){
 			return function(array $args)use($rule,$instance){
@@ -356,7 +363,7 @@ class Di implements \ArrayAccess{
 
 	private function getParams(\ReflectionMethod $method, array $rule) {
 		$paramInfo = [];
-		foreach ($method->getParameters() as $param){
+		foreach ($method->getParameters() as $i=>$param){
 			if($this->php7){
 				$type = $param->getType();
 				$class = $type&&!$type->isBuiltin()?(string)$type:null;
@@ -389,7 +396,14 @@ class Di implements \ArrayAccess{
 				if($param->allowsNull()) $class = null;
 				else throw new \Exception('Class '.$class.' does not exist');
 			}
-			$paramInfo[] = [$class, $param->allowsNull(), array_key_exists($class, $rule['substitutions']), in_array($class, $rule['newInstances']),$param->getName(),$param->isDefaultValueAvailable()?$param->getDefaultValue():null];
+			$paramName = $param->getName();
+			if(isset($rule['method'][$method->name][$paramName]))
+				$default = $rule['method'][$method->name][$paramName];
+			elseif(isset($rule['method'][$method->name][$i]))
+				$default = $rule['method'][$method->name][$i];
+			else
+				$default = $param->isDefaultValueAvailable()?$param->getDefaultValue():null;
+			$paramInfo[] = [$class, $param->allowsNull(), array_key_exists($class, $rule['substitutions']), in_array($class, $rule['newInstances']),$paramName,$default];
 		}
 		return function (array $args, array $share = []) use ($paramInfo, $rule) {
 			if(!empty($rule['shareInstances'])){
