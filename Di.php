@@ -1,6 +1,6 @@
 <?php
 /*
- * Wire - Dependency Injection Made Universal
+ * Ding - Dependency Injection Made Universal
  * 
  * inspired from a fusion of
  * Dice 2.0-Transitional - 2012-2015 Tom Butler <tom@r.je> | http://r.je/dice.html
@@ -11,14 +11,14 @@
  *		for powerfull API, lazy load cascade rules resolution,
  *		full registry implementation, freeze optimisation
  * 
- * @package Wire
- * @version 1.7
- * @link http://github.com/redcatphp/Wire/
+ * @package Ding
+ * @version 2.0
+ * @link http://github.com/redcatphp/Ding/
  * @author Jo Surikat <jo@surikat.pro>
  * @website http://redcatphp.com
  */
 
-namespace RedCat\Wire;
+namespace RedCat\Ding;
 
 class Di implements \ArrayAccess{
 	private $php7;
@@ -300,7 +300,7 @@ class Di implements \ArrayAccess{
 		if(isset($rule['instanceOf'])&&is_object($rule['instanceOf'])){
 			return function(array $args)use($rule,$instance){
 				$object = $rule['instanceOf'];
-				if($object instanceof DiExpand)
+				if($object instanceof Expander)
 					$object = $object($this,$args);
 				$class = new \ReflectionClass(get_class($object));
 				if($rule['shared'])
@@ -356,7 +356,7 @@ class Di implements \ArrayAccess{
 				$param[$k] = $this->expand($value, $share);
 			}
 		}
-		elseif($param instanceof DiExpand){
+		elseif($param instanceof Expander){
 			$param = $param($this,$share);
 		}
 		return $param;
@@ -459,7 +459,7 @@ class Di implements \ArrayAccess{
 					if($sub){
 						if(is_string($rule['substitutions'][$class]))
 							$parameters[$j] = $this->create($rule['substitutions'][$class],[],false,$share);
-						elseif($rule['substitutions'][$class] instanceof DiExpand)
+						elseif($rule['substitutions'][$class] instanceof Expander)
 							$parameters[$j] = $rule['substitutions'][$class]->__invoke($this,$share);
 						else
 							$parameters[$j] = $rule['substitutions'][$class];
@@ -611,7 +611,7 @@ class Di implements \ArrayAccess{
 	}
 	function buildCallbackFromString($str){
 		$dic = $this;
-		return new DiExpand(function()use($dic,$str){
+		return new Expander(function()use($dic,$str){
 			$parts = explode('::', $str);
 			$object = $dic->create(array_shift($parts));
 			while ($var = array_shift($parts)){

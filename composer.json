@@ -1,10 +1,10 @@
 {
-	"name": "redcatphp/wire",
+	"name": "redcatphp/ding",
 	"type": "library",
-	"description": "Wire - Dependency Injection Made Universal",
-	"keywords": ["Wire","Dependency Injection","Configuration","Inversion of Control"],
+	"description": "Ding - Dependency Injection Made Universal",
+	"keywords": ["Ding","Dependency Injection","Configuration","Inversion of Control"],
 	"license": ["LGPL-3.0+","CC0-1.0"],
-	"homepage": "http://redcatphp.com/wire-dependency-injection",
+	"homepage": "http://redcatphp.com/ding-dependency-injection",
 	"authors": [
 		{
 			"name": "Jo Surikat",
@@ -18,7 +18,7 @@
 	},
 	"autoload": {
 		"psr-4":{
-			"RedCat\\Wire\\": ""
+			"RedCat\\Ding\\": ""
 		}
 	},
 	"minimum-stability": "dev",

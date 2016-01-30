@@ -1,6 +1,6 @@
 <?php
-namespace RedCat\Wire;
-class DiExpand{
+namespace RedCat\Ding;
+class Expander{
 	private $x;
 	function __construct($x,$params=[]){
 		$this->x = $x;
