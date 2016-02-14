@@ -1,6 +1,6 @@
 <?php
 namespace RedCat\Ding;
-class Expander{
+class Expander implements ExpanderInterface{
 	private $x;
 	function __construct($x,$params=[]){
 		$this->x = $x;
