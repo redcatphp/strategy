@@ -12,7 +12,7 @@
  *		full registry implementation, freeze optimisation
  * 
  * @package Ding
- * @version 2.0
+ * @version 3.0
  * @link http://github.com/redcatphp/Ding/
  * @author Jo Surikat <jo@surikat.pro>
  * @website http://redcatphp.com
@@ -296,11 +296,16 @@ class Di implements \ArrayAccess{
 		$params = $this->getParams($reflectionClass->getMethod($func), $this->getRule($class))->__invoke($this->expand($args));
 		return call_user_func_array([$object,$func],$params);
 	}
+	function closureInvoke(\Closure $closure,array $args=[], $rules=[]){
+		$reflectionFunction = new \ReflectionFunction($closure);
+		$params = $this->getParams($reflectionFunction, $rules+$this->rules['*'])->__invoke($this->expand($args));
+		return call_user_func_array($closure,$params);
+	}
 	private function getClosure($name, array $rule, $instance){
 		if(isset($rule['instanceOf'])&&is_object($rule['instanceOf'])){
 			return function(array $args)use($rule,$instance){
 				$object = $rule['instanceOf'];
-				if($object instanceof Expander)
+				if($object instanceof ExpanderInterface)
 					$object = $object($this,$args);
 				$class = new \ReflectionClass(get_class($object));
 				if($rule['shared'])
@@ -356,13 +361,13 @@ class Di implements \ArrayAccess{
 				$param[$k] = $this->expand($value, $share);
 			}
 		}
-		elseif($param instanceof Expander){
+		elseif($param instanceof ExpanderInterface){
 			$param = $param($this,$share);
 		}
 		return $param;
 	}
 
-	private function getParams(\ReflectionMethod $method, array $rule) {
+	private function getParams(\ReflectionFunctionAbstract $method, array $rule) {
 		$paramInfo = [];
 		foreach ($method->getParameters() as $i=>$param){
 			if($this->php7){
@@ -459,7 +464,7 @@ class Di implements \ArrayAccess{
 					if($sub){
 						if(is_string($rule['substitutions'][$class]))
 							$parameters[$j] = $this->create($rule['substitutions'][$class],[],false,$share);
-						elseif($rule['substitutions'][$class] instanceof Expander)
+						elseif($rule['substitutions'][$class] instanceof ExpanderInterface)
 							$parameters[$j] = $rule['substitutions'][$class]->__invoke($this,$share);
 						else
 							$parameters[$j] = $rule['substitutions'][$class];
@@ -611,7 +616,7 @@ class Di implements \ArrayAccess{
 	}
 	function buildCallbackFromString($str){
 		$dic = $this;
-		return new Expander(function()use($dic,$str){
+		return new ExpanderInterface(function()use($dic,$str){
 			$parts = explode('::', $str);
 			$object = $dic->create(array_shift($parts));
 			while ($var = array_shift($parts)){
