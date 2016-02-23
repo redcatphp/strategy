@@ -607,7 +607,7 @@ class Di implements \ArrayAccess{
 		if(!isset($this->keys[$k]))
 			return;
 		$v = $this[$k];
-		while($k = array_shift($param)){
+		while(null !== $k=array_shift($param)){
 			if(!isset($v[$k]))
 				return;
 			$v = $v[$k];
