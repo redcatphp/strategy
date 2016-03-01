@@ -10,6 +10,9 @@ trait CallTrait {
 			}
 			return $di->method($this, $method, $args);
 		}
+		if(($c=get_parent_class($this))&&method_exists($c,__FUNCTION__)){
+			return parent::__call($func,$args);
+		}
 		throw new \BadMethodCallException('Call to undefined method '.get_class($this).'->'.$func);
 	}
 }
