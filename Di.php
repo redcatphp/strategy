@@ -288,13 +288,15 @@ class Di implements \ArrayAccess{
 			$instance = get_class($obj).':'.$this->hashArguments($instance);
 		$this->instances[$instance] = $obj;
 	}
-	function method($object,$func,array $args=[]){
+	function methodGetParams($object,$func,array $args=[]){
 		if(!is_object($object))
 			$object = call_user_func_array([$this,'create'],(array)$object);
 		$class = get_class($object);
 		$reflectionClass = new \ReflectionClass($class);
-		$params = $this->getParams($reflectionClass->getMethod($func), $this->getRule($class))->__invoke($this->expand($args));
-		return call_user_func_array([$object,$func],$params);
+		return $this->getParams($reflectionClass->getMethod($func), $this->getRule($class))->__invoke($this->expand($args));
+	}
+	function method($object,$func,array $args=[]){
+		return call_user_func_array([$object,$func],$this->methodGetParams($object,$func,$args));
 	}
 	function closureInvoke(\Closure $closure,array $args=[], $rules=[]){
 		$reflectionFunction = new \ReflectionFunction($closure);
