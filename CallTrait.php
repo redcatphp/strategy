@@ -28,7 +28,11 @@ trait CallTrait {
 			return $di->method($this, $method, $args);
 		}
 		if(($c=get_parent_class($this))&&method_exists($c,__FUNCTION__)){
-			return parent::__call($func,$args);
+			$m = new \ReflectionMethod($c, __FUNCTION__);
+			$dc1 = $m->getDeclaringClass()->name;
+			$dc2 = (new \ReflectionMethod($this, __FUNCTION__))->getDeclaringClass()->name;
+			if($dc1!=$dc2)
+				return parent::__call($func,$args);
 		}
 		throw new \BadMethodCallException('Call to undefined method '.get_class($this).'->'.$func);
 	}
