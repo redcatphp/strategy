@@ -12,7 +12,7 @@
  *		full registry implementation, freeze optimisation
  * 
  * @package Ding
- * @version 3.0
+ * @version 3.2
  * @link http://github.com/redcatphp/Ding/
  * @author Jo Surikat <jo@surikat.pro>
  * @website http://redcatphp.com
@@ -43,7 +43,7 @@ class Di implements \ArrayAccess{
 	
 	static function load($map,$freeze=null,$file=null){
 		if(!isset($freeze)){
-			$freeze = defined('REDCAT_WIRE_FREEZE')?REDCAT_WIRE_FREEZE:false;
+			$freeze = defined('REDCAT_DING_FREEZE')?REDCAT_DING_FREEZE:false;
 		}
 		if($freeze){
 			if(!isset($file)){
