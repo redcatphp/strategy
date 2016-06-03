@@ -12,7 +12,7 @@
  *		full registry implementation, freeze optimisation
  * 
  * @package Ding
- * @version 3.2.1
+ * @version 3.3.0
  * @link http://github.com/redcatphp/Ding/
  * @author Jo Surikat <jo@surikat.pro>
  * @website http://redcatphp.com
@@ -28,7 +28,7 @@ class Di implements \ArrayAccess{
 	private $frozen = [];
 	private $raw = [];
 	private $keys = [];
-	private $mapCache = [];
+	private $mapMerge = [];
 	private $hashArgumentsStorage;
 
 	private $rules = ['*' => ['shared' => false, 'construct' => [], 'shareInstances' => [], 'call' => [], 'method' => [], 'inherit' => true, 'substitutions' => [], 'instanceOf' => null, 'newInstances' => []]];
@@ -506,17 +506,18 @@ class Di implements \ArrayAccess{
 	}
 	function loadPhpVar($php){
 		if(isset($php['$'])){
-			if(isset($php['$']['prependConfig'])){
-				$this->mapCache['prepend'] = array_map([$this,'phpLoadFile'],(array)$php['$']['prependConfig']);
-				array_map([$this,'loadPhpVar'],$this->mapCache['prepend']);
+			$merge = isset($php['$']['mergeConfig'])?$php['$']['mergeConfig']:false;
+			if($merge){
+				$merge = array_map([$this,'phpLoadFile'],(array)$merge);
+				array_map([$this,'loadPhpVar'],$merge);
+				array_unshift($this->mapMerge,$merge);
 			}
 			$this->recursiveResolveVar($php['$']);
 			foreach($php['$'] as $key=>$value){
 				$this[$key] = $value;
 			}
-			if(isset($php['$']['appendConfig'])){
-				$this->mapCache['append'] = array_map([$this,'phpLoadFile'],(array)$php['$']['appendConfig']);
-				array_map([$this,'loadPhpVar'],$this->mapCache['append']);
+			if($merge){
+				array_map([$this,'loadPhpVar'],$merge);
 			}
 		}
 	}
@@ -534,20 +535,14 @@ class Di implements \ArrayAccess{
 			}
 		}
 	}
-	function loadPhpClass($php){
-		if(isset($this->mapCache['prepend'])){
-			$map = $this->mapCache['prepend'];
-			unset($this->mapCache['prepend']);
-			array_map([$this,'loadPhpClass'],$map);
-		}
-		
+	function loadPhpClass($php){		
 		if(isset($php['rules']))
 			foreach($php['rules'] as $key=>$value)
 				$this->defineClass($key,$value);
 		
-		if(isset($this->mapCache['append'])){
-			$map = $this->mapCache['append'];
-			unset($this->mapCache['append']);
+		$mapMerge = $this->mapMerge;
+		$this->mapMerge = [];
+		foreach($mapMerge as $map){
 			array_map([$this,'loadPhpClass'],$map);
 		}
 	}
