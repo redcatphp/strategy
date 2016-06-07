@@ -12,7 +12,7 @@
  *		full registry implementation, freeze optimisation
  * 
  * @package Ding
- * @version 3.3.0
+ * @version 3.4.0
  * @link http://github.com/redcatphp/Ding/
  * @author Jo Surikat <jo@surikat.pro>
  * @website http://redcatphp.com
@@ -90,9 +90,20 @@ class Di implements \ArrayAccess{
 		$this->values[$id] = $value;
 		$this->keys[$id] = true;
 	}
-	function offsetGet($id){
-		if(strpos($id,'.')!==false)
-			return $this->getDotOffset($id);
+	function &offsetGet($id){
+		if(strpos($id,'.')!==false){
+			$param = explode('.',$id);
+			$k = array_shift($param);
+			$null = null;
+			if(!isset($this->keys[$k]))
+				return $null;
+			$v = &$this->values[$k];
+			while(null !== $k=array_shift($param)){
+				if(!isset($v[$k])) return $null;
+				$v = &$v[$k];
+			}
+			return $v;
+		}
 		if(!isset($this->keys[$id])){
 			$this[$id] = $this->create($id);
 		}
@@ -102,13 +113,15 @@ class Di implements \ArrayAccess{
 				|| isset($this->protected[$this->values[$id]])
 				|| !method_exists($this->values[$id], '__invoke')
 		) {
-				return $this->values[$id];
+				$ref = &$this->values[$id];
+				return $ref;
 		}
 		if (isset($this->factories[$this->values[$id]])) {
 			return $this->values[$id]($this);
 		}
 		$raw = $this->values[$id];
-		$val = $this->values[$id] = $raw($this);
+		$this->values[$id] = $raw($this);
+		$val = &$this->values[$id];
 		$this->raw[$id] = $raw;
 		$this->frozen[$id] = true;
 		return $val;
@@ -601,12 +614,10 @@ class Di implements \ArrayAccess{
 	function getDotOffset($param){
 		$param = explode('.',$param);
 		$k = array_shift($param);
-		if(!isset($this->keys[$k]))
-			return;
-		$v = $this[$k];
+		if(!isset($this->keys[$k])) return;
+		$v = $this->offsetGet($k);				
 		while(null !== $k=array_shift($param)){
-			if(!isset($v[$k]))
-				return;
+			if(!isset($v[$k])) return;
 			$v = $v[$k];
 		}
 		return $v;
