@@ -12,7 +12,7 @@
  *		full registry implementation, freeze optimisation
  * 
  * @package Ding
- * @version 3.4.0
+ * @version 3.5.0
  * @link http://github.com/redcatphp/Ding/
  * @author Jo Surikat <jo@surikat.pro>
  * @website http://redcatphp.com
@@ -527,6 +527,23 @@ class Di implements \ArrayAccess{
 			}
 			$this->recursiveResolveVar($php['$']);
 			foreach($php['$'] as $key=>$value){
+				$fc = substr($key,0,1);
+				if($fc==':'){
+					$key = substr($key,1);
+					if(isset($this[$key])&&is_array($this[$key])){
+						$this[$key] = self::merge_recursive($this[$key],$value);
+						continue;
+					}
+				}
+				elseif($fc=='!'){
+					$key = substr($key,1);
+					if(isset($this[$key])){
+						if(is_array($this[$key])){
+							$this[$key] = self::merge_recursive($value,$this[$key]);
+						}
+						continue;
+					}
+				}
 				$this[$key] = $value;
 			}
 			if($merge){
