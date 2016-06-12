@@ -12,7 +12,7 @@
  *		full registry implementation, freeze optimisation
  * 
  * @package Ding
- * @version 3.6.0
+ * @version 3.6.1
  * @link http://github.com/redcatphp/Ding/
  * @author Jo Surikat <jo@surikat.pro>
  * @website http://redcatphp.com
@@ -513,9 +513,17 @@ class Di implements \ArrayAccess{
 				$this->defineClass($key,$value);
 	}
 	function loadPhpMap(array $map){
-		$map = array_map([$this,'phpLoadFile'],$map);
-		array_map([$this,'loadPhpVar'],$map);
-		array_map([$this,'loadPhpClass'],$map);
+		$php = $this->phpLoadFile(array_shift($map));
+		$mergeConfig = &$php['$']['mergeConfig'];
+		$mergeConfig = array_merge($map,isset($mergeConfig)?(array)$mergeConfig:[]);
+		foreach($mergeConfig as $k=>$v){
+			if($v = realpath($v)){
+				$mergeConfig[$k] = $v;
+			}
+		}
+		$mergeConfig = array_unique($mergeConfig);
+		$this->loadPhpVar($php);
+		$this->loadPhpClass($php);
 	}
 	function loadPhpVar($php){
 		if(isset($php['$'])){
@@ -705,6 +713,6 @@ class Di implements \ArrayAccess{
 		return $merged;
 	}
 }
-function includeFile($file){
-	return include($file);
+function includeFile(){
+	return include(func_get_arg(0));
 }
