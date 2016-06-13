@@ -620,9 +620,9 @@ class Di implements \ArrayAccess{
 			$args = [];
 			foreach($reflectionFunction->getParameters() as $param){
 				$k = $param->getName();
-				$args[$k] = isset($this->configVarsTmp[$k])?$this->configVarsTmp[$k]:null;
+				$args[] = isset($this->configVarsTmp[$k])?$this->configVarsTmp[$k]:null;
 			}
-			$php = call_user_func_array($php,$params);
+			$php = call_user_func_array($php,$args);
 		}
 		return $php;
 	}
