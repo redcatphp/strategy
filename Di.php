@@ -35,6 +35,9 @@ class Di implements \ArrayAccess{
 	private $cache = [];
 	private $instances = [];
 	
+	private $configVarsTmp = [];
+	private $phpCacheFile = [];
+	
 	protected static $instance;
 	
 	static function make($name, $args = [], $forceNewInstance = false, $share = []){
@@ -513,6 +516,10 @@ class Di implements \ArrayAccess{
 				$this->defineClass($key,$value);
 	}
 	function loadPhpMap(array $map){
+		foreach(array_reverse($map) as $file){ //preload for $vars transmission
+			$this->phpLoadFile($file);
+		}
+		
 		$php = $this->phpLoadFile(array_shift($map));
 		$mergeConfig = &$php['$']['mergeConfig'];
 		$mergeConfig = array_merge($map,isset($mergeConfig)?(array)$mergeConfig:[]);
@@ -594,9 +601,17 @@ class Di implements \ArrayAccess{
 		}
 	}
 	private function phpLoadFile($php){
-		if(!is_array($php)&&is_file($php))
-			$php = includeFile($php);
-		return $php;
+		if(!isset($this->phpCacheFile[$php])){
+			if(is_file($php)){
+				list($content,$vars) = includeConfig($php,$this->configVarsTmp);
+				$this->configVarsTmp = $vars+$this->configVarsTmp;
+				$this->phpCacheFile[$php] = $content;
+			}
+			else{
+				$this->phpCacheFile[$php] = [];
+			}
+		}
+		return $this->phpCacheFile[$php];
 	}
 	function defineClass($class,$rule){
 		if(isset($rule['instanceOf'])&&is_string($rule['instanceOf'])){
@@ -713,6 +728,8 @@ class Di implements \ArrayAccess{
 		return $merged;
 	}
 }
-function includeFile(){
-	return include(func_get_arg(0));
+function includeConfig(){
+	if(func_num_args()>1&&count(func_get_arg(1)))
+		extract(func_get_arg(1));
+	return [include(func_get_arg(0)),get_defined_vars()];
 }
