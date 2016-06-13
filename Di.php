@@ -517,7 +517,7 @@ class Di implements \ArrayAccess{
 	}
 	function loadPhpMap(array $map){
 		foreach(array_reverse($map) as $file){ //preload for $vars transmission
-			$this->phpLoadFile($file);
+			$this->phpLoadFileCache($file);
 		}
 		
 		$php = $this->phpLoadFile(array_shift($map));
@@ -600,7 +600,7 @@ class Di implements \ArrayAccess{
 			array_map([$this,'loadPhpClass'],$map);
 		}
 	}
-	private function phpLoadFile($php){
+	private function phpLoadFileCache($php){
 		if(!isset($this->phpCacheFile[$php])){
 			if(is_file($php)){
 				list($content,$vars) = includeConfig($php,$this->configVarsTmp);
@@ -612,6 +612,19 @@ class Di implements \ArrayAccess{
 			}
 		}
 		return $this->phpCacheFile[$php];
+	}
+	private function phpLoadFile($php){
+		$php = $this->phpLoadFileCache($php);
+		if($php instanceof \Closure){
+			$reflectionFunction = new \ReflectionFunction($php);
+			$args = [];
+			foreach($reflectionFunction->getParameters() as $param){
+				$k = $param->getName();
+				$args[$k] = isset($this->configVarsTmp[$k])?$this->configVarsTmp[$k]:null;
+			}
+			$php = call_user_func_array($php,$params);
+		}
+		return $php;
 	}
 	function defineClass($class,$rule){
 		if(isset($rule['instanceOf'])&&is_string($rule['instanceOf'])){
