@@ -43,11 +43,11 @@ class Di implements \ArrayAccess{
 	
 	static function load($map,$freeze=null,$file=null){
 		if(!isset($freeze)){
-			$freeze = defined('REDCAT_DING_FREEZE')?REDCAT_DING_FREEZE:false;
+			$freeze = defined('REDCAT_DEV_CONFIG')?!REDCAT_DEV_CONFIG:false;
 		}
 		if($freeze){
 			if(!isset($file)){
-				$file = getcwd().'/.tmp/redcat.svar';
+				$file = getcwd().'/.tmp/redcat-ding.svar';
 			}
 			if(is_file($file)){
 				static::$instance = unserialize(file_get_contents($file));
