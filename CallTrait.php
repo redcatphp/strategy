@@ -31,7 +31,8 @@ trait CallTrait {
 			$m = new \ReflectionMethod($c, __FUNCTION__);
 			$dc1 = $m->getDeclaringClass()->name;
 			$dc2 = (new \ReflectionMethod($this, __FUNCTION__))->getDeclaringClass()->name;
-			if($dc1!=$dc2)
+			$dc3 = get_class($this);
+			if($dc1!=$dc2||($dc2!=$dc3&&$dc1!=$dc3))
 				return parent::__call($func,$args);
 		}
 		throw new \BadMethodCallException('Call to undefined method '.get_class($this).'->'.$func);
