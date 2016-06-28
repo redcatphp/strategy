@@ -12,7 +12,7 @@
  *		full registry implementation, freeze optimisation
  * 
  * @package Ding
- * @version 3.8.0
+ * @version 3.8.1
  * @link http://github.com/redcatphp/Ding/
  * @author Jo Surikat <jo@surikat.pro>
  * @website http://redcatphp.com
@@ -255,30 +255,37 @@ class Di implements \ArrayAccess{
 			$this->rules[$name] = $rule;
 		}
 	}
+	function validateClassName($name){
+		return preg_match('(^(?>[a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*\\\\?)+$)', $name);
+	}
 	function getRule($name){
 		$rules = $this->rules;
 		$rule = $rules['*'];
 		unset($rules['*']);
-		if(preg_match('(^(?>[a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*\\\\?)+$)', $name)){
+		$validClassName = $this->validateClassName($name);
+		if($validClassName){
 			$class = new \ReflectionClass($name);
 			$classNames = [];
 			$interfaces = $class->getInterfaceNames();
 			do{
 				$classNames[] = $class->getName();
 			}while($class=$class->getParentClass());
-			$classNames = array_merge($classNames,$interfaces);
 			$rules = array_intersect_key($rules, array_flip($classNames));
 			uksort($rules,function($a,$b)use($classNames){
 				return array_search($a,$classNames)<array_search($b,$classNames);
 			});
-		}
-		foreach($rules as $key=>$r){
-			if($rule['instanceOf']===null&&(!isset($r['inherit'])||$r['inherit']===true)){
-				$rule = self::merge_recursive($rule, $r);
+			foreach($rules as $key=>$r){
+				if($rule['instanceOf']===null&&(!isset($r['inherit'])||$r['inherit']===true)){
+					$rule = self::merge_recursive($rule, $r);
+				}
 			}
 		}
-		if(isset($this->rules[$name]))
+		if(isset($this->rules[$name])){
 			$rule = self::merge_recursive($rule, $this->rules[$name]);
+		}
+		elseif(!$validClassName){
+			return false;
+		}
 		return $rule;
 	}
 
@@ -292,8 +299,11 @@ class Di implements \ArrayAccess{
 				$instance = $name.':'.$this->hashArguments($args);
 		}
 		if(!$forceNewInstance&&isset($this->instances[$instance])) return $this->instances[$instance];
+		$rule = $this->getRule($name);
+		if(!$rule)
+			return;
 		if(empty($this->cache[$name]))
-			$this->cache[$name] = $this->getClosure($name, $this->getRule($name), $instance);
+			$this->cache[$name] = $this->getClosure($name, $rule, $instance);
 		return $this->cache[$name]($args, $share);
 	}
 	
