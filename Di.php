@@ -274,7 +274,7 @@ class Di implements \ArrayAccess{
 			uksort($rules,function($a,$b)use($classNames){
 				return array_search($a,$classNames)<array_search($b,$classNames);
 			});
-			foreach($rules as $key=>$r){
+			foreach($rules as $r){
 				if($rule['instanceOf']===null&&(!isset($r['inherit'])||$r['inherit']===true)){
 					$rule = self::merge_recursive($rule, $r);
 				}
@@ -354,7 +354,7 @@ class Di implements \ArrayAccess{
 			$constructor = $class->getConstructor();
 			$params = $constructor ? $this->getParams($constructor, $rule) : null;
 			if($rule['shared']){
-				$closure = function (array $args, array $share) use ($class, $name, $constructor, $params, $instance) {
+				$closure = function (array $args, array $share) use ($class, $constructor, $params, $instance) {
 					$this->instances[$instance] = $class->newInstanceWithoutConstructor();
 					if ($constructor) $constructor->invokeArgs($this->instances[$instance], $params($args, $share));
 					return $this->instances[$instance];
