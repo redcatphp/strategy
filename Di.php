@@ -12,7 +12,7 @@
  *		full registry implementation, freeze optimisation
  * 
  * @package Ding
- * @version 3.9.0
+ * @version 3.9.1
  * @link http://github.com/redcatphp/Ding/
  * @author Jo Surikat <jo@surikat.pro>
  * @website http://redcatphp.com
