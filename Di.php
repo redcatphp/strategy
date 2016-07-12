@@ -265,11 +265,11 @@ class Di implements \ArrayAccess{
 		$validClassName = $this->validateClassName($name);
 		if($validClassName){
 			$class = new \ReflectionClass($name);
-			$classNames = [];
-			$interfaces = $class->getInterfaceNames();
+			$classNames = array_reverse($class->getInterfaceNames());
 			do{
 				$classNames[] = $class->getName();
 			}while($class=$class->getParentClass());
+			
 			$rules = array_intersect_key($rules, array_flip($classNames));
 			uksort($rules,function($a,$b)use($classNames){
 				return array_search($a,$classNames)<array_search($b,$classNames);
