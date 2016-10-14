@@ -431,12 +431,15 @@ class Di implements \ArrayAccess{
 				else throw new \Exception('Class '.$class.' does not exist');
 			}
 			$paramName = $param->getName();
-			if(isset($rule['method'][$method->name][$paramName]))
+			if(isset($rule['method'][$method->name][$paramName])){
 				$default = $rule['method'][$method->name][$paramName];
-			elseif(isset($rule['method'][$method->name][$i]))
+			}
+			elseif(isset($rule['method'][$method->name][$i])){
 				$default = $rule['method'][$method->name][$i];
-			else
+			}
+			else{
 				$default = $param->isDefaultValueAvailable()?$param->getDefaultValue():null;
+			}
 			$paramInfo[] = [$class, $param->allowsNull(), array_key_exists($class, $rule['substitutions']), in_array($class, $rule['newInstances']),$paramName,$default];
 		}
 		return function (array $args, array $share = []) use ($paramInfo, $rule) {
@@ -510,6 +513,11 @@ class Di implements \ArrayAccess{
 				}
 				else{
 					$parameters[$j] = $default;
+				}
+			}
+			if(!empty($args)){
+				foreach($args as $arg){
+					$parameters[] = $arg;
 				}
 			}
 			ksort($parameters);
