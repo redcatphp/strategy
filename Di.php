@@ -319,7 +319,7 @@ class Di implements \ArrayAccess{
 			$object = call_user_func_array([$this,'create'],(array)$object);
 		$class = get_class($object);
 		$reflectionClass = new \ReflectionClass($class);
-		return $this->getParams($reflectionClass->getMethod($func), $this->getRule($class))->__invoke($this->expand($args));
+		return $this->getParams($reflectionClass->getMethod($func), $this->getRule($class))->__invoke($this->expand($args),[],false);
 	}
 	function method($object,$func,array $args=[]){
 		return call_user_func_array([$object,$func],$this->methodGetParams($object,$func,$args));
@@ -442,7 +442,7 @@ class Di implements \ArrayAccess{
 			}
 			$paramInfo[] = [$class, $param->allowsNull(), array_key_exists($class, $rule['substitutions']), in_array($class, $rule['newInstances']),$paramName,$default];
 		}
-		return function (array $args, array $share = []) use ($paramInfo, $rule) {
+		return function (array $args, array $share = [], $construct = true) use ($paramInfo, $rule) {
 			if(!empty($rule['shareInstances'])){
 				$shareInstances = [];
 				foreach($rule['shareInstances'] as $v){
@@ -459,7 +459,7 @@ class Di implements \ArrayAccess{
 				}
 				$share = array_merge($share, $shareInstances);
 			}
-			if($share||!empty($rule['construct'])){
+			if($construct && ( $share || !empty($rule['construct']) )){
 				$nArgs = $args;
 				foreach($this->expand($rule['construct']) as $k=>$v){
 					if(is_integer($k)){
