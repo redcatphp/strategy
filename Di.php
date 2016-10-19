@@ -361,7 +361,7 @@ class Di implements \ArrayAccess{
 				};
 			}
 			elseif ($params){
-				$closure = function(array $args, array $share)use($class, $params, $class){
+				$closure = function(array $args, array $share)use($class, $params){
 					return $class->newInstanceArgs($params($args, $share));
 				};
 			}
