@@ -1,5 +1,5 @@
 <?php
-namespace RedCat\Ding;
+namespace RedCat\Strategy;
 use Closure;
 class Factory implements ExpanderInterface {
 	private $closure;

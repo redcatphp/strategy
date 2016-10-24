@@ -1,5 +1,5 @@
 <?php
-namespace RedCat\Ding;
+namespace RedCat\Strategy;
 class Expander implements ExpanderInterface{
 	private $x;
 	function __construct($x,$params=[]){

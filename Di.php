@@ -1,6 +1,6 @@
 <?php
 /*
- * Ding - Dependency Injection Made Universal
+ * Strategy - Dependency Injection Made Universal
  * 
  * inspired from a fusion of
  * Dice 2.0-Transitional - 2012-2015 Tom Butler <tom@r.je> | http://r.je/dice.html
@@ -11,14 +11,14 @@
  *		for powerfull API, lazy load cascade rules resolution,
  *		full registry implementation, freeze optimisation
  * 
- * @package Ding
- * @version 3.9.1
- * @link http://github.com/redcatphp/Ding/
+ * @package Strategy
+ * @version 4.0.0
+ * @link http://github.com/redcatphp/Strategy/
  * @author Jo Surikat <jo@surikat.pro>
  * @website http://redcatphp.com
  */
 
-namespace RedCat\Ding;
+namespace RedCat\Strategy;
 
 class Di implements \ArrayAccess{
 	private $php7;
@@ -50,7 +50,7 @@ class Di implements \ArrayAccess{
 		}
 		if($freeze){
 			if(!isset($file)){
-				$file = getcwd().'/.tmp/redcat-ding.svar';
+				$file = getcwd().'/.tmp/redcat-strategy.svar';
 			}
 			if(is_file($file)){
 				static::$instance = unserialize(file_get_contents($file));

@@ -1,4 +1,4 @@
 <?php
 /* callable */
-namespace RedCat\Ding;
+namespace RedCat\Strategy;
 interface ExpanderInterface{}

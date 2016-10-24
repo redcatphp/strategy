@@ -12,7 +12,7 @@ $a = new A(new B, new C, new D(new E, new F));
 ```
 
 
-Ding way:  
+Strategy way:  
  
 ```php
 $a = $di->create('A');  
@@ -25,45 +25,45 @@ $a = $di->create('A');
 Summary
 -------
 
-1. [Notes about Ding](http://redcatphp.com/ding-dependency-injection#about)
-	1. [Origin](http://redcatphp.com/ding-dependency-injection#origin)
-	2. [Differences](http://redcatphp.com/ding-dependency-injection#differences)
-2. [Paradigm](http://redcatphp.com/ding-dependency-injection#paradigm)
-	1. [Simplify your code](http://redcatphp.com/ding-dependency-injection#simplify)
-	2. [Improve maintainability](http://redcatphp.com/ding-dependency-injection#maintainability)
-	3. [Improve scalability](http://redcatphp.com/ding-dependency-injection#scalability)
-	4. [Be Wise](http://redcatphp.com/ding-dependency-injection#be-wise)
-3. [Get Started](http://redcatphp.com/ding-dependency-injection#get-started)
-	1. [Di instanciation](http://redcatphp.com/ding-dependency-injection#di-instanciation)
-	2. [Classes instanciation](http://redcatphp.com/ding-dependency-injection#classes-instanciation)
-4. [Basic usage](http://redcatphp.com/ding-dependency-injection#basic-usage)
-	1. [Object graph creation](http://redcatphp.com/ding-dependency-injection#basic-usage-1)
-	2. [Providing additional arguments to constructors](http://redcatphp.com/ding-dependency-injection#basic-usage-2)
-5. [Shared dependencies](http://redcatphp.com/ding-dependency-injection#shared-dependencies)
-	1. [Using rules to configure shared dependencies](http://redcatphp.com/ding-dependency-injection#shared-dependencies)
-6. [Configuring the container with rules](http://redcatphp.com/ding-dependency-injection#config-rules)
-	1. [Substitutions](http://redcatphp.com/ding-dependency-injection#config-rules-substitutions)
-	2. [Inheritance](http://redcatphp.com/ding-dependency-injection#config-rules-inheritance)
-	3. [Constructor Parameters](http://redcatphp.com/ding-dependency-injection#config-rules-constructor)
-	4. [Setter injection (mutators)](http://redcatphp.com/ding-dependency-injection#config-rules-mutators)
-	5. [Default rules](http://redcatphp.com/ding-dependency-injection#config-rules-default)
-	6. [Named instances](http://redcatphp.com/ding-dependency-injection#config-rules-named)
-	7. [Sharing instances across a tree](http://redcatphp.com/ding-dependency-injection#config-rules-tree)
-7. [Rule cascading](http://redcatphp.com/ding-dependency-injection#cascading-rules)
-8. [Arbitrary Data](http://redcatphp.com/ding-dependency-injection#arbitrary-data)
-	1. [Simple variable definition](http://redcatphp.com/ding-dependency-injection#simple-variable)
-	2. [Anonymous functions](http://redcatphp.com/ding-dependency-injection#anonymous-functions)
-	3. [Defining factories manually](http://redcatphp.com/ding-dependency-injection#manual-factory)
-	4. [Protecting anonymous functions](http://redcatphp.com/ding-dependency-injection#protecting-anonymous)
-	5. [Extend definitions](http://redcatphp.com/ding-dependency-injection#extend-definitions)
-9. [PHP Config](http://redcatphp.com/ding-dependency-injection#php-config)
+1. [Notes about Strategy](http://redcatphp.com/strategy-dependency-injection#about)
+	1. [Origin](http://redcatphp.com/strategy-dependency-injection#origin)
+	2. [Differences](http://redcatphp.com/strategy-dependency-injection#differences)
+2. [Paradigm](http://redcatphp.com/strategy-dependency-injection#paradigm)
+	1. [Simplify your code](http://redcatphp.com/strategy-dependency-injection#simplify)
+	2. [Improve maintainability](http://redcatphp.com/strategy-dependency-injection#maintainability)
+	3. [Improve scalability](http://redcatphp.com/strategy-dependency-injection#scalability)
+	4. [Be Wise](http://redcatphp.com/strategy-dependency-injection#be-wise)
+3. [Get Started](http://redcatphp.com/strategy-dependency-injection#get-started)
+	1. [Di instanciation](http://redcatphp.com/strategy-dependency-injection#di-instanciation)
+	2. [Classes instanciation](http://redcatphp.com/strategy-dependency-injection#classes-instanciation)
+4. [Basic usage](http://redcatphp.com/strategy-dependency-injection#basic-usage)
+	1. [Object graph creation](http://redcatphp.com/strategy-dependency-injection#basic-usage-1)
+	2. [Provistrategy additional arguments to constructors](http://redcatphp.com/strategy-dependency-injection#basic-usage-2)
+5. [Shared dependencies](http://redcatphp.com/strategy-dependency-injection#shared-dependencies)
+	1. [Using rules to configure shared dependencies](http://redcatphp.com/strategy-dependency-injection#shared-dependencies)
+6. [Configuring the container with rules](http://redcatphp.com/strategy-dependency-injection#config-rules)
+	1. [Substitutions](http://redcatphp.com/strategy-dependency-injection#config-rules-substitutions)
+	2. [Inheritance](http://redcatphp.com/strategy-dependency-injection#config-rules-inheritance)
+	3. [Constructor Parameters](http://redcatphp.com/strategy-dependency-injection#config-rules-constructor)
+	4. [Setter injection (mutators)](http://redcatphp.com/strategy-dependency-injection#config-rules-mutators)
+	5. [Default rules](http://redcatphp.com/strategy-dependency-injection#config-rules-default)
+	6. [Named instances](http://redcatphp.com/strategy-dependency-injection#config-rules-named)
+	7. [Sharing instances across a tree](http://redcatphp.com/strategy-dependency-injection#config-rules-tree)
+7. [Rule cascastrategy](http://redcatphp.com/strategy-dependency-injection#cascastrategy-rules)
+8. [Arbitrary Data](http://redcatphp.com/strategy-dependency-injection#arbitrary-data)
+	1. [Simple variable definition](http://redcatphp.com/strategy-dependency-injection#simple-variable)
+	2. [Anonymous functions](http://redcatphp.com/strategy-dependency-injection#anonymous-functions)
+	3. [Defining factories manually](http://redcatphp.com/strategy-dependency-injection#manual-factory)
+	4. [Protecting anonymous functions](http://redcatphp.com/strategy-dependency-injection#protecting-anonymous)
+	5. [Extend definitions](http://redcatphp.com/strategy-dependency-injection#extend-definitions)
+9. [PHP Config](http://redcatphp.com/strategy-dependency-injection#php-config)
 
-1. Notes about Ding
+1. Notes about Strategy
 ----------------------
 
 ### 1.1 Origin
 
- Ding is mainly inspired by [Dice](https://r.je/dice.html) with added [Pimple](http://pimple.sensiolabs.org) abilities and great improvements.
+ Strategy is mainly inspired by [Dice](https://r.je/dice.html) with added [Pimple](http://pimple.sensiolabs.org) abilities and great improvements.
 
 ### 1.2 Differences
 
@@ -77,7 +77,7 @@ Summary
 - cascade config for arbitrary data and rules which can use them
 - freeze config optimisation
 
- Many chapters of the following documentation correspond to [Dice documentation](https://r.je/dice.html) with some modifications, reformulations, additions and new features explanations. The main differences from Dice and new features explanations will be foreword by Ding specificity label.
+ Many chapters of the following documentation correspond to [Dice documentation](https://r.je/dice.html) with some modifications, reformulations, additions and new features explanations. The main differences from Dice and new features explanations will be foreword by Strategy specificity label.
 
 2. Paradigm
 -----------
@@ -117,7 +117,7 @@ $a = new A(new B, new C, new D(new E, new F));
 ```
 
 
-Ding way (zero configuration):  
+Strategy way (zero configuration):  
  
 ```php
 $a = $di->create('A');  
@@ -129,9 +129,9 @@ $a = $di->create('A');
 
 ### 2.2 Improve maintainability
 
- With Ding, you're now able to add dependencies to any class just by modification on its constructor. Let's take an example:  
+ With Strategy, you're now able to add dependencies to any class just by modification on its constructor. Let's take an example:  
  The definition of the class *C* is modified during the development lifecycles and now has a dependency on a class called *X*.  
- Instead of finding everywhere that *C* is created and have to passing an instance of X to it, this is handled automatically by the [IoC](https://en.wikipedia.org/wiki/Inversion_of_control) Container.  
+ Instead of finstrategy everywhere that *C* is created and have to passing an instance of X to it, this is handled automatically by the [IoC](https://en.wikipedia.org/wiki/Inversion_of_control) Container.  
  That's all you need to do:  
  
 ```php
@@ -191,10 +191,10 @@ class A {
 
 ### 2.4 Improve scalability
 
- Forget almost all factories, registries and service locators. By using Ding you can change the constructor parameters adding/removing dependencies on a whim without worrying about side-effects throughout your code.  
+ Forget almost all factories, registries and service locators. By using Strategy you can change the constructor parameters adstrategy/removing dependencies on a whim without worrying about side-effects throughout your code.  
  Objects doesn't anymore need to know what dependencies other objects have and making changes become incredibly easy!
 
- Once Ding is handling your application's dependencies, you can simply add a class to the system like this:
+ Once Strategy is handling your application's dependencies, you can simply add a class to the system like this:
 
  
 ```php
@@ -220,11 +220,11 @@ class ExistingA {
 ```
 
 
- And it will just work without even telling Ding anything about it. You don't need to worry that you've changed an existing class's constructor as it will automatically be resolved and you don't need to worry about locating or configuring the dependencies that the new class needs!
+ And it will just work without even telling Strategy anything about it. You don't need to worry that you've changed an existing class's constructor as it will automatically be resolved and you don't need to worry about locating or configuring the dependencies that the new class needs!
 
 ### 2.5 Be wise
 
- Ding can manage dependencies on top level of your application and resolve them through deep tree of coupled components helping you to avoid ["couriers"](http://r.je/oop-courier-anti-pattern.html) [anti-pattern](https://en.wikipedia.org/wiki/Anti-pattern) which is a common problem when using dependency injection.  
+ Strategy can manage dependencies on top level of your application and resolve them through deep tree of coupled components helping you to avoid ["couriers"](http://r.je/oop-courier-anti-pattern.html) [anti-pattern](https://en.wikipedia.org/wiki/Anti-pattern) which is a common problem when using dependency injection.  
  But it does not exempt you to use pure [OO](https://en.wikipedia.org/wiki/Object-oriented_programming) [encapsulation](https://en.wikipedia.org/wiki/Encapsulation_%28computer_programming%29) inside low levels of a decoupled component where you don't expect external scalability and where you choose consciously to tightly couple things.  
  Finally, it belongs to you to rule what is the limit between object-oriented and component-oriented approach by clearly define decoupled components and add separately coupling couch.
 
@@ -235,9 +235,9 @@ class ExistingA {
 
  
 ```php
-$di = \\Ding\\Di::getInstance(); //global shared instance  
+$di = \\Strategy\\Di::getInstance(); //global shared instance  
   
-$di = new \\Ding\\Di; //classical new instance  
+$di = new \\Strategy\\Di; //classical new instance  
         
 ```
 
@@ -248,9 +248,9 @@ $di = new \\Ding\\Di; //classical new instance
 ```php
 $di->create('My\\Class');  
   
-\\Ding\\Di::getInstance()->create('My\\Class'); //global shared instance used via object  
+\\Strategy\\Di::getInstance()->create('My\\Class'); //global shared instance used via object  
   
-\\Ding\\Di::make('My\\Class'); //global shared instance used via static call  
+\\Strategy\\Di::make('My\\Class'); //global shared instance used via static call  
         
 ```
 
@@ -258,9 +258,9 @@ $di->create('My\\Class');
 4. Basic usage
 --------------
 
- Why is Ding (and its [Dice](https://r.je/dice.html) parent) different? A lot of DICs require that you provide some configuration for each possible component in order just to work.
+ Why is Strategy (and its [Dice](https://r.je/dice.html) parent) different? A lot of DICs require that you provide some configuration for each possible component in order just to work.
 
- Ding takes a convention-over-configuration approach and uses type hinting to infer what dependencies an object has. As such, no configuration is required for basic object graphs.
+ Strategy takes a convention-over-configuration approach and uses type hinting to infer what dependencies an object has. As such, no configuration is required for basic object graphs.
 
 ### 4.1 Object graph creation
 
@@ -333,7 +333,7 @@ A Object
 
  At its simplest level, this has removed a lot of the initialisation code that would otherwise be needed to create the object graph.
 
-### 4.2 Providing additional arguments to constructors
+### 4.2 Provistrategy additional arguments to constructors
 
 It's common for constructors to require both dependencies which are common to every instance as well as some configuration that is specific to that particular instance. For example: 
 ```php
@@ -350,7 +350,7 @@ class A {
 ```
 
 
- Here, the class needs an instance of B as well as a unique name. Ding allows this: 
+ Here, the class needs an instance of B as well as a unique name. Strategy allows this: 
 ```php
 $a1 = $di->create('A', ['FirstA']);  
 $a2 = $di->create('A', ['SecondA']);  
@@ -363,7 +363,7 @@ echo $a2->name; // "SecondA"
 
  The dependency of B is automatically resolved and the string in the second parameter is passed as the second argument. You can pass any number of additional constructor arguments using the second argument as an array to $di->create();
 
- Ding specificity  
+ Strategy specificity  
  You can also use associative array where the name of argument will fit the name of variable in construct definition and even combine associative, numeric index and type hinting!  
  Let's take an example: 
 ```php
@@ -418,15 +418,15 @@ echo $a3->pseudo; // "Surikat"
 
  By far the most common real-world usage of Dependency Injection is to enable a single instance of an object to be accessible to different parts of the application. For example, Database objects and locale configuration are common candidates for this purpose.
 
- Ding makes it possible to create an object that is shared throughout the application. Anything which would traditionally be a global variable, a singleton, accessible statically or accessed through a Service Locator / Repository is considered a shared object.
+ Strategy makes it possible to create an object that is shared throughout the application. Anything which would traditionally be a global variable, a singleton, accessible statically or accessed through a Service Locator / Repository is considered a shared object.
 
  Any class constructor which asks for an instance of a class that has been marked as shared will be passed the shared instance of the object rather than a new instance.
 
 ### 5.1 Using rules to configure shared dependencies
 
- The method of defining shared objects is by Rules. See the section on [Rules](http://redcatphp.com/ding-dependency-injection#config-rules) below for more information. They are used to configure the container. Here's how a shared object is defined using a rule.
+ The method of defining shared objects is by Rules. See the section on [Rules](http://redcatphp.com/strategy-dependency-injection#config-rules) below for more information. They are used to configure the container. Here's how a shared object is defined using a rule.
 
- Ding accepts a rule for a given class an applies it each time it creates an instance of that class. A rule is an array with a set of options that will be applied when an instance is requested from the container.
+ Strategy accepts a rule for a given class an applies it each time it creates an instance of that class. A rule is an array with a set of options that will be applied when an instance is requested from the container.
 
  This example uses PDO as this is a very common use-case. 
 ```php
@@ -436,7 +436,7 @@ $rule = ['shared' => true];
 //Apply the rule to instances of PDO  
 $di->addRule('PDO', $rule);  
   
-//Now any time PDO is requested from Ding, the same instance will be returned  
+//Now any time PDO is requested from Strategy, the same instance will be returned  
 $pdo = $di->create('PDO');  
 $pdo2 = $di->create('PDO');  
 var\_dump($pdo === $pdo2); //TRUE  
@@ -467,7 +467,7 @@ $rule = [
 //Apply the rule to the PDO class  
 $di->addRule('PDO', $rule);  
   
-//Now any time PDO is requested from Ding, the same instance will be returned  
+//Now any time PDO is requested from Strategy, the same instance will be returned  
 //And will havebeen constructed with the arugments supplied in 'construct'  
 $pdo = $di->create('PDO');  
 $pdo2 = $di->create('PDO');  
@@ -490,7 +490,7 @@ class MyOtherClass {
 }  
   
   
-//Note, Ding is never told about the 'MyClass' or 'MyOtherClass' classes, it can  
+//Note, Strategy is never told about the 'MyClass' or 'MyOtherClass' classes, it can  
 //just automatically create them and inject the required PDO isntance  
   
 $myobj = $di->create('MyClass');  
@@ -502,10 +502,10 @@ var\_dump($myotherobj->pdo === $myobj->pdo); //TRUE
 ```
 
 
- The *construct* rule has been added to ensure that every time an instance of PDO is created, it's given a set of constructor arguments. See the section on [construct](http://redcatphp.com/ding-dependency-injection#config-rules-constructor) for more information.
+ The *construct* rule has been added to ensure that every time an instance of PDO is created, it's given a set of constructor arguments. See the section on [construct](http://redcatphp.com/strategy-dependency-injection#config-rules-constructor) for more information.
 
- Ding specificity  
- The global instance of *RedCat\\Ding\\Di* class is naturally shared.
+ Strategy specificity  
+ The global instance of *RedCat\\Strategy\\Di* class is naturally shared.
 
 6. Configuring the container with Rules
 ---------------------------------------
@@ -528,15 +528,15 @@ $a = $di->create('A');
 
  Each time an instance of *A* is created by the container it will use the rule defined by $rule
 
- Ding Rules can be configured with these properties:
+ Strategy Rules can be configured with these properties:
 
-- **shared** (*boolean*) - Whether a single instance is used throughout the container. [View Example](http://redcatphp.com/ding-dependency-injection#shared-dependencies-rule)
-- **inherit** (*boolean*) - Whether the rule will also apply to subclasses (defaults to true). [View Example](http://redcatphp.com/ding-dependency-injection#config-rules-inheritance)
-- **construct** (*array*) - Additional parameters passed to the constructor. [View Example](http://redcatphp.com/ding-dependency-injection#config-rules-constructor)
-- **substitutions** (*array*) - key->value substitutions for dependencies. [View Example](http://redcatphp.com/ding-dependency-injection#config-rules-substitutions)
-- **call** (*multidimensional array*) - A list of methods and their arguments which will be called after the object has been constructed. [View Example](http://redcatphp.com/ding-dependency-injection#config-rules-shared)
-- **instanceOf** (*string*) - The name of the class to initiate. Used when the class name is not passed to $di->addRule(). [View Example](http://redcatphp.com/ding-dependency-injection#config-rules-named)
-- **shareInstances** (*array*) - A list of class names that will be shared throughout a single object tree. [View Example](http://redcatphp.com/ding-dependency-injection#config-rules-tree)
+- **shared** (*boolean*) - Whether a single instance is used throughout the container. [View Example](http://redcatphp.com/strategy-dependency-injection#shared-dependencies-rule)
+- **inherit** (*boolean*) - Whether the rule will also apply to subclasses (defaults to true). [View Example](http://redcatphp.com/strategy-dependency-injection#config-rules-inheritance)
+- **construct** (*array*) - Additional parameters passed to the constructor. [View Example](http://redcatphp.com/strategy-dependency-injection#config-rules-constructor)
+- **substitutions** (*array*) - key->value substitutions for dependencies. [View Example](http://redcatphp.com/strategy-dependency-injection#config-rules-substitutions)
+- **call** (*multidimensional array*) - A list of methods and their arguments which will be called after the object has been constructed. [View Example](http://redcatphp.com/strategy-dependency-injection#config-rules-shared)
+- **instanceOf** (*string*) - The name of the class to initiate. Used when the class name is not passed to $di->addRule(). [View Example](http://redcatphp.com/strategy-dependency-injection#config-rules-named)
+- **shareInstances** (*array*) - A list of class names that will be shared throughout a single object tree. [View Example](http://redcatphp.com/strategy-dependency-injection#config-rules-tree)
 
 ### 6.1 Substitutions
 
@@ -577,11 +577,11 @@ $a = $di->create('A');
 ```
 
 
- Ding specificity  
+ Strategy specificity  
 *['instance' => 'name'] syntax* was removed because it was not compatible with associative array of arguments and not very consistent in some other cases and it was replaced by Expander object that can act like a lazy instanciator, or lazy callback resolver if you pass a Closure (anonymous function) to it.  
- To use it, simply instanciate it by is full class name *new \\RedCat\\Ding\\Expander()* or by call *use RedCat\\Ding\\Expander;* at top of your code so you can use just *new Expander()* throughout the following code.
+ To use it, simply instanciate it by is full class name *new \\RedCat\\Strategy\\Expander()* or by call *use RedCat\\Strategy\\Expander;* at top of your code so you can use just *new Expander()* throughout the following code.
 
- The new Expander('B') object is used to tell Ding to create an instance of 'B' in place of 'Iterator'. *new Expander('B')* can be read as 'An instance of B created by the Ding'.
+ The new Expander('B') object is used to tell Strategy to create an instance of 'B' in place of 'Iterator'. *new Expander('B')* can be read as 'An instance of B created by the Strategy'.
 
 The reason that *['substitutions' => ['iterator' => $di->create('B')]]* is not used is that this creates a B object there and then. Using the Expander object means that an instance of B is only created at the time it's required.
 
@@ -594,7 +594,7 @@ $a = new A(new DirectoryIterator('/tmp'));
 ```
 
 
-There are three ways this can be achieved using Ding.
+There are three ways this can be achieved using Strategy.
 
 1. Direct substitution, pass the fully constructed object to the rule:
 
@@ -627,7 +627,7 @@ $a = $di->create('A');
 ```
 
 
-3. Named instances. See the section on [Named instances](http://redcatphp.com/ding-dependency-injection#config-rules-named) for a more detailed explanation of how this works.
+3. Named instances. See the section on [Named instances](http://redcatphp.com/strategy-dependency-injection#config-rules-named) for a more detailed explanation of how this works.
 
  
 ```php
@@ -722,7 +722,7 @@ var\_dump($b1 === $b2); //FALSE (they are not the same instance)
 
 ### 6.3 Constructor parameters
 
- Ding specificity  
+ Strategy specificity  
  constructParams was renamed construct.
 
 When defining a rule, any constructor parameters which are not type hinted must be supplied in order for the class to be initialised successfully. For example:
@@ -779,7 +779,7 @@ $a = $di->create('A')
 ```
 
 
-Ding is smart enough to work out the parameter order and will execute as expected and be equal to:
+Strategy is smart enough to work out the parameter order and will execute as expected and be equal to:
 
  
 ```php
@@ -792,7 +792,7 @@ new A('Foo', 'Bar', new B);
 
 Objects often need to be configured in ways that their constructor does not account for. For example:[PDO::setAttribute()](http://www.php.net/manual/en/pdo.setattribute.php) may need to be called to further configure PDO even after it's been constructed.
 
-To account fo this, Ding Rules can supply a list of methods to call on an object after it's been constructed as well as supply the arguments to those methods. This is achieved using $rule->call:
+To account fo this, Strategy Rules can supply a list of methods to call on an object after it's been constructed as well as supply the arguments to those methods. This is achieved using $rule->call:
 
  
 ```php
@@ -868,7 +868,7 @@ $myobj = $di->create('MyClass');
 ```
 
 
- Ding specificity  
+ Strategy specificity  
  For passing parameters to calls, you can also use associative array fitting the methods variables names like for the construct rule. But you can also use associative array that will use method name for keys and if you have to pass just one argument to the method that is not an array you can pass it without wrap it in array, it will be casted automatically.  
  Let's take some examples: 
 ```php
@@ -894,7 +894,7 @@ $myobj = $di->create('MyClass');
 
 ### 6.5 Default rules
 
-Ding also allows for a rule to apply to any object it creates by applying it to '\*'. As it's impossible to name a class '\*' in php this will not cause any compatibility issues.
+Strategy also allows for a rule to apply to any object it creates by applying it to '\*'. As it's impossible to name a class '\*' in php this will not cause any compatibility issues.
 
 The default rule will apply to any object which isn't affected by another rule.
 
@@ -909,7 +909,7 @@ class MyPDO extends PDO {
 ```
 
 
-Ding allows you to pass a "MyPDO" object to any constructor that requires an instance of PDO by adding a default rule:
+Strategy allows you to pass a "MyPDO" object to any constructor that requires an instance of PDO by adstrategy a default rule:
 
  
 ```php
@@ -936,7 +936,7 @@ The default rule is identical in functionality to all other rules. Objects could
 
 ### 6.6 Named instances
 
-One of Ding's most powerful features is Named instances. Named instances allow different configurations of dependencies to be accessible within the application. This is useful when not all your application logic needs to use the same configuration of a dependency.
+One of Strategy's most powerful features is Named instances. Named instances allow different configurations of dependencies to be accessible within the application. This is useful when not all your application logic needs to use the same configuration of a dependency.
 
 For example, if you need to copy data from one database to another you'd need two database objects configured differently. With named instances this is possible:
 
@@ -1067,10 +1067,10 @@ var\_dumb($a->c->d === $a2->c->d); //FALSE
 ```
 
 
-7 Cascading Rules
+7 Cascastrategy Rules
 -----------------
 
-When adding a rule that has already been set, Ding will update the existing rule that is applied to that class
+When adstrategy a rule that has already been set, Strategy will update the existing rule that is applied to that class
 
  
 ```php
@@ -1105,7 +1105,7 @@ $di->addRule('B', ['construct' => ['foo']]);
 ```
 
 
-Because B inherits A, rules applied to A will applied to B (this behaviour can be turned off, [see the section on inheritance](http://redcatphp.com/ding-dependency-injection#config-rules-inheritance)) so in this instance, B will be both shared and have the constructor parameters set.
+Because B inherits A, rules applied to A will applied to B (this behaviour can be turned off, [see the section on inheritance](http://redcatphp.com/strategy-dependency-injection#config-rules-inheritance)) so in this instance, B will be both shared and have the constructor parameters set.
 
 However if required, shared can be turned off for B:
 
@@ -1122,18 +1122,18 @@ $di->addRule('B', [
 
 And this keep A shared, but turn it off for the subclass B.
 
- Ding specificity  
- Here is the most significative improvement to Dice made in Ding.  
- Unlike Dice, Ding make rules cascade at instanciation, the advantage of that technique is the inheritance can fit php native inheritance (extends and implements) without to load class, in a case we use an autoloader, the use of is\_subclass\_of in Dice call theses classes at rule definition time and do a lot of unnecessary work.  
+ Strategy specificity  
+ Here is the most significative improvement to Dice made in Strategy.  
+ Unlike Dice, Strategy make rules cascade at instanciation, the advantage of that technique is the inheritance can fit php native inheritance (extends and implements) without to load class, in a case we use an autoloader, the use of is\_subclass\_of in Dice call theses classes at rule definition time and do a lot of unnecessary work.  
  It also affect how the rules are defined, with "making rules on call" practice the order of rules definition doesn't matter, the cascade will follow natural php heritance from ancestor to final class, passing by interfaces in the order they're implemented in the class definition.  
  An other difference is that the rules will be recursively merged during cascade.  
- And there is an other api feature for extending rule and not replacing it unlike to addRule: $di->extendRule($name, $key (shared|construct|shareInstances|call|inherit|substitutions|instanceOf|newInstances), $value, $push = null).
+ And there is an other api feature for extenstrategy rule and not replacing it unlike to addRule: $di->extendRule($name, $key (shared|construct|shareInstances|call|inherit|substitutions|instanceOf|newInstances), $value, $push = null).
 
 8 Arbitrary Data
 ----------------
 
  These features comes from [Pimple](http://pimple.sensiolabs.org) .  
- Arbitrary variables are used for share specific config across a whole application. You can also use them for bring very specific higher flexibility to factories, it can be convenient sometimes, but this practice can be considered here as an anti-pattern and you can avoid this most of time using [rules](http://redcatphp.com/ding-dependency-injection#config-rules).
+ Arbitrary variables are used for share specific config across a whole application. You can also use them for bring very specific higher flexibility to factories, it can be convenient sometimes, but this practice can be considered here as an anti-pattern and you can avoid this most of time using [rules](http://redcatphp.com/strategy-dependency-injection#config-rules).
 
  All the [Pimple](http://pimple.sensiolabs.org) API is the same as on original doc except when you "offsetGet" an unexistant key it will be filled with $di->create($key).
 
@@ -1182,7 +1182,7 @@ var\_dump($session===$session2); //will show false
 
 ### 8.4 Protecting anonymous functions
 
- Because Ding sees anonymous functions as service definitions, you need to wrap them with the protect() method to store them as parameters and to be able to reuse them. 
+ Because Strategy sees anonymous functions as service definitions, you need to wrap them with the protect() method to store them as parameters and to be able to reuse them. 
 ```php
 $container['random\_func'] = $container->protect(function () {  
     return rand();  
@@ -1214,7 +1214,7 @@ $container->extend('session\_storage', function ($storage, $c) {
 
 ### defineClass
 
- You can use this API to automatically interchange constructor params or setters params by name with arbitrary variables setted in Ding (see [arbitrary data](http://redcatphp.com/ding-dependency-injection#arbitrary-data)).   
+ You can use this API to automatically interchange constructor params or setters params by name with arbitrary variables setted in Strategy (see [arbitrary data](http://redcatphp.com/strategy-dependency-injection#arbitrary-data)).   
  It's a convenient way to decouple somes common configuration variables from classes rules definitions.  
  By prefixing an associative or numeric key of array with "*$*", the value will be used to point the variable that have to be used instead. You can use a "*.*" (dot) in the pointer to traverse an array.   
 Let's take an example:   
@@ -1308,10 +1308,9 @@ $di->loadPhpMap([
 
  This is a static method operant on global instance of *Di*. You have to pass it a config map like with *loadPhpMap* but you also can pass a boolean to enable or disable the *frozen* mode and a path to store the *frozen* file. This is the last optimization step for server in production, it will backup the resolved config by serializing the Container so it will be faster to load. You'll have to delete your *frozen* file to update config if you change it. 
 ```php
-RedCat\\Ding\\Di::load([  
+RedCat\\Strategy\\Di::load([  
     '/path/to/default\_config.php',  
     '/path/to/config.php',  
 ],true,'temp-path/to/myApplyConfig.svar');  
         
 ```
-

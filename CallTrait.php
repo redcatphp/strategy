@@ -1,5 +1,5 @@
 <?php
-namespace RedCat\Ding;
+namespace RedCat\Strategy;
 trait CallTrait {
 	function __call($func,$args){
 		$di = property_exists($this,'di')&&$this->di instanceof Di?$this->di:Di::getInstance();
