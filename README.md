@@ -15,7 +15,7 @@ $a = new A(new B, new C, new D(new E, new F));
 Strategy way:  
  
 ```php
-$a = $di->create('A');  
+$a = $di->get('A');  
         
 ```
 
@@ -120,7 +120,7 @@ $a = new A(new B, new C, new D(new E, new F));
 Strategy way (zero configuration):  
  
 ```php
-$a = $di->create('A');  
+$a = $di->get('A');  
         
 ```
 
@@ -246,9 +246,9 @@ $di = new \\Strategy\\Di; //classical new instance
 
  
 ```php
-$di->create('My\\Class');  
+$di->get('My\\Class');  
   
-\\Strategy\\Di::getInstance()->create('My\\Class'); //global shared instance used via object  
+\\Strategy\\Di::getInstance()->get('My\\Class'); //global shared instance used via object  
   
 \\Strategy\\Di::make('My\\Class'); //global shared instance used via static call  
         
@@ -299,7 +299,7 @@ class E {
       
 }  
   
-$a = $di->create('A');  
+$a = $di->get('A');  
 print\_r($a);  
         
 ```
@@ -352,8 +352,8 @@ class A {
 
  Here, the class needs an instance of B as well as a unique name. Strategy allows this: 
 ```php
-$a1 = $di->create('A', ['FirstA']);  
-$a2 = $di->create('A', ['SecondA']);  
+$a1 = $di->get('A', ['FirstA']);  
+$a2 = $di->get('A', ['SecondA']);  
   
 echo $a1->name; // "FirstA"  
 echo $a2->name; // "SecondA"  
@@ -361,7 +361,7 @@ echo $a2->name; // "SecondA"
 ```
 
 
- The dependency of B is automatically resolved and the string in the second parameter is passed as the second argument. You can pass any number of additional constructor arguments using the second argument as an array to $di->create();
+ The dependency of B is automatically resolved and the string in the second parameter is passed as the second argument. You can pass any number of additional constructor arguments using the second argument as an array to $di->get();
 
  Strategy specificity  
  You can also use associative array where the name of argument will fit the name of variable in construct definition and even combine associative, numeric index and type hinting!  
@@ -381,17 +381,17 @@ class A {
     }  
 }  
   
-$a1 = $di->create('A', [ //order of associative keys doesn't matter  
+$a1 = $di->get('A', [ //order of associative keys doesn't matter  
     'lastname'=>'RedCat'  
     'name'=>'Jo',  
     'pseudo'=>'Surikat',  
 ]);  
-$a2 = $di->create('A', [  
+$a2 = $di->get('A', [  
     'RedCat',  
     'Surikat'  
     'name'=>'Jo', //order of associative key doesn't matter  
 ]);  
-$a3 = $di->create('A', [  
+$a3 = $di->get('A', [  
     'Jo',  
     'lastname'=>'RedCat' //order of associative key doesn't matter  
     'Surikat',  
@@ -437,8 +437,8 @@ $rule = ['shared' => true];
 $di->addRule('PDO', $rule);  
   
 //Now any time PDO is requested from Strategy, the same instance will be returned  
-$pdo = $di->create('PDO');  
-$pdo2 = $di->create('PDO');  
+$pdo = $di->get('PDO');  
+$pdo2 = $di->get('PDO');  
 var\_dump($pdo === $pdo2); //TRUE  
   
 //And any class which asks for an instance of PDO will be given the same instance:  
@@ -449,7 +449,7 @@ class MyClass {
     }  
 }  
   
-$myobj = $di->create('MyClass');  
+$myobj = $di->get('MyClass');  
 var\_dump($pdo === $myobj->pdo); //TRUE  
         
 ```
@@ -469,8 +469,8 @@ $di->addRule('PDO', $rule);
   
 //Now any time PDO is requested from Strategy, the same instance will be returned  
 //And will havebeen constructed with the arugments supplied in 'construct'  
-$pdo = $di->create('PDO');  
-$pdo2 = $di->create('PDO');  
+$pdo = $di->get('PDO');  
+$pdo2 = $di->get('PDO');  
 var\_dump($pdo === $pdo2); //TRUE  
   
   
@@ -493,8 +493,8 @@ class MyOtherClass {
 //Note, Strategy is never told about the 'MyClass' or 'MyOtherClass' classes, it can  
 //just automatically create them and inject the required PDO isntance  
   
-$myobj = $di->create('MyClass');  
-$myotherobj = $di->create('MyOtherClass');  
+$myobj = $di->get('MyClass');  
+$myotherobj = $di->get('MyOtherClass');  
   
 //When constructed, both objects will have been passed the same instance of PDO  
 var\_dump($myotherobj->pdo === $myobj->pdo); //TRUE  
@@ -521,7 +521,7 @@ $di->addRule('rulename', $rule);
  By default, rule names match class names so, to apply a rule to a class called *A* you would use: 
 ```php
 $di->addRule('A', $rule);  
-$a = $di->create('A');  
+$a = $di->get('A');  
         
 ```
 
@@ -572,7 +572,7 @@ The rule can be defined like this:
 $rule = ['substitutions' => ['Iterator' => new Expander('B')]];  
   
 $di->addRule('A', $rule);  
-$a = $di->create('A');  
+$a = $di->get('A');  
         
 ```
 
@@ -583,7 +583,7 @@ $a = $di->create('A');
 
  The new Expander('B') object is used to tell Strategy to create an instance of 'B' in place of 'Iterator'. *new Expander('B')* can be read as 'An instance of B created by the Strategy'.
 
-The reason that *['substitutions' => ['iterator' => $di->create('B')]]* is not used is that this creates a B object there and then. Using the Expander object means that an instance of B is only created at the time it's required.
+The reason that *['substitutions' => ['iterator' => $di->get('B')]]* is not used is that this creates a B object there and then. Using the Expander object means that an instance of B is only created at the time it's required.
 
 However, what if If the application required this?
 
@@ -603,7 +603,7 @@ There are three ways this can be achieved using Strategy.
 $rule = ['substitutions' => ['Iterator' => new DirectoryIterator('/tmp')]];  
   
 $di->addRule('A', $rule);  
-$a = $di->create('A');  
+$a = $di->get('A');  
         
 ```
 
@@ -622,7 +622,7 @@ $rule = ['substitutions' => 
         ];  
   
 $di->addRule('A', $rule);  
-$a = $di->create('A');  
+$a = $di->get('A');  
         
 ```
 
@@ -654,7 +654,7 @@ $aRule = ['substitutions' => 
 $di->addRule('A', $aRule);  
   
 //Now, when $a is created, it will be passed the Iterator configured as $MyDirectoryIterator  
-$a = $di->create('A');  
+$a = $di->get('A');  
         
 ```
 
@@ -683,8 +683,8 @@ $bRule = $di->getRule('B');
 var\_dump($bRule['shared']); //TRUE  
   
 //And to test it:  
-$b1 = $di->create('B');  
-$b2 = $di->create('B');  
+$b1 = $di->get('B');  
+$b2 = $di->get('B');  
   
 var\_dump($b1 === $b2); //TRUE (they are the same instance)  
         
@@ -712,8 +712,8 @@ $bRule = $di->getRule('B');
 var\_dump($bRule['shared']); //FALSE  
   
 //And to test it:  
-$b1 = $di->create('B');  
-$b2 = $di->create('B');  
+$b1 = $di->get('B');  
+$b2 = $di->get('B');  
   
 var\_dump($b1 === $b2); //FALSE (they are not the same instance)  
         
@@ -747,7 +747,7 @@ $rule = ['construct' => ['Foo', 'Bar']];
   
 $di->addRule('A', $rule);  
   
-$a = $di->create('A');  
+$a = $di->get('A');  
         
 ```
 
@@ -774,7 +774,7 @@ $rule = ['construct' => ['Foo', 'Bar']];
   
 $di->addRule('A', $rule);  
   
-$a = $di->create('A')  
+$a = $di->get('A')  
         
 ```
 
@@ -822,7 +822,7 @@ $rule = [
   
   
 $di->addRule('A', $rule);  
-$a = $di->create('A');  
+$a = $di->get('A');  
         
 ```
 
@@ -863,7 +863,7 @@ class MyClass {
 }  
   
 //MyObj will be constructed with a fully initialisd PDO object  
-$myobj = $di->create('MyClass');  
+$myobj = $di->get('MyClass');  
         
 ```
 
@@ -926,7 +926,7 @@ $rule = ['substitutions' => ['PDO' => new Expander('MyPDO')]];
 //Apply the rule to every class  
 $di->addRule('\*', $rule);  
   
-$foo = $di->create('Foo');  
+$foo = $di->get('Foo');  
 echo get\_class($foo->pdo); // "MyPDO"  
         
 ```
@@ -983,7 +983,7 @@ $dataCopierRule = [
   
 $di->addRule('DataCopier', $dataCopierRule);  
   
-$dataCopier = $di->create('DataCopier');  
+$dataCopier = $di->get('DataCopier');  
         
 ```
 
@@ -1050,7 +1050,7 @@ $di->addRule('A', $rule);
   
   
 //Create an A object  
-$a = $di->create('A');  
+$a = $di->get('A');  
   
 //Anywhere that asks for an instance D within the tree that existis within A will be given the same instance:  
 //Both the B and C objects within the tree will share an instance of D  
@@ -1058,7 +1058,7 @@ var\_dumb($a->b->d === $a->c->d); //TRUE
   
 //However, create another instance of A and everything in this tree will get its own instance of D:  
   
-$a2 = $di->create('A');  
+$a2 = $di->get('A');  
 var\_dumb($a2->b->d === $a2->c->d); //TRUE  
   
 var\_dumb($a->b->d === $a2->b->d); //FALSE  
@@ -1135,7 +1135,7 @@ And this keep A shared, but turn it off for the subclass B.
  These features comes from [Pimple](http://pimple.sensiolabs.org) .  
  Arbitrary variables are used for share specific config across a whole application. You can also use them for bring very specific higher flexibility to factories, it can be convenient sometimes, but this practice can be considered here as an anti-pattern and you can avoid this most of time using [rules](http://redcatphp.com/strategy-dependency-injection#config-rules).
 
- All the [Pimple](http://pimple.sensiolabs.org) API is the same as on original doc except when you "offsetGet" an unexistant key it will be filled with $di->create($key).
+ All the [Pimple](http://pimple.sensiolabs.org) API is the same as on original doc except when you "offsetGet" an unexistant key it will be filled with $di->get($key).
 
 ### 8.1 Simple variable definition
 

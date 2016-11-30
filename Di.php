@@ -2,17 +2,14 @@
 /*
  * Strategy - Dependency Injection Made Universal
  * 
- * inspired from a fusion of
- * Dice 2.0-Transitional - 2012-2015 Tom Butler <tom@r.je> | http://r.je/dice.html
- *		for clean decoupled dependencies resolution
- * and Pimple 3 - 2009 Fabien Potencier | http://pimple.sensiolabs.org
- *		for arbitrary data and manual hook
+ * inspired from Dice | http://r.je/dice.html
  * with lot of RedCat's improvements, addons and remixs
+ *		for clean decoupled dependencies resolution
  *		for powerfull API, lazy load cascade rules resolution,
- *		full registry implementation, freeze optimisation
+ *		full registry implementation
  * 
  * @package Strategy
- * @version 4.0.0
+ * @version 5.0.0
  * @link http://github.com/redcatphp/Strategy/
  * @author Jo Surikat <jo@surikat.pro>
  * @website http://redcatphp.com
@@ -20,55 +17,15 @@
 
 namespace RedCat\Strategy;
 
-class Di implements \ArrayAccess{
+class Di{
 	private $php7;
-	private $values = [];
-	private $factories;
-	private $protected;
-	private $frozen = [];
-	private $raw = [];
-	private $keys = [];
-	private $mapMerge = [];
 	private $hashArgumentsStorage;
 
 	private $rules = ['*' => ['shared' => false, 'construct' => [], 'shareInstances' => [], 'call' => [], 'method' => [], 'inherit' => true, 'substitutions' => [], 'instanceOf' => null, 'newInstances' => []]];
 	private $cache = [];
 	private $instances = [];
 	
-	private $configVarsTmp = [];
-	private $phpCacheFile = [];
-	
 	protected static $instance;
-	
-	static function make($name, $args = [], $forceNewInstance = false, $share = []){
-		return static::getInstance()->create($name, $args, $forceNewInstance, $share);
-	}
-	
-	static function load($map,$freeze=null,$file=null){
-		if(!isset($freeze)){
-			$freeze = defined('REDCAT_DEV_CONFIG')?!REDCAT_DEV_CONFIG:false;
-		}
-		if($freeze){
-			if(!isset($file)){
-				$file = getcwd().'/.tmp/redcat-strategy.svar';
-			}
-			if(is_file($file)){
-				static::$instance = unserialize(file_get_contents($file));
-				static::$instance->instances[__CLASS__] = static::$instance;
-			}
-			else{
-				static::getInstance()->loadPhpMap((array)$map);
-				$dir = dirname($file);
-				if(!is_dir($dir))
-					@mkdir($dir,0777,true);
-				file_put_contents($file,serialize(static::$instance));
-			}
-		}
-		else{
-			static::getInstance()->loadPhpMap((array)$map);
-		}
-		return static::$instance;
-	}
 	
 	static function getInstance(){
 		if(!isset(static::$instance)){
@@ -78,148 +35,10 @@ class Di implements \ArrayAccess{
 		return static::$instance;
 	}
 		
-	function __construct(array $values = []){
+	function __construct(){
 		$this->php7 = version_compare(PHP_VERSION,'7','>=');
-		$this->factories = new \SplObjectStorage();
-		$this->protected = new \SplObjectStorage();
-		foreach ($values as $key => $value) {
-			$this->offsetSet($key, $value);
-		}
-	}
-	function offsetSet($id, $value){
-		if (isset($this->frozen[$id])) {
-			throw new \RuntimeException(sprintf('Cannot override frozen service "%s".', $id));
-		}
-		$this->values[$id] = $value;
-		$this->keys[$id] = true;
-	}
-	function &offsetGet($id){
-		if(strpos($id,'.')!==false){
-			$param = explode('.',$id);
-			$k = array_shift($param);
-			$null = null;
-			if(!isset($this->keys[$k]))
-				return $null;
-			$v = &$this->values[$k];
-			while(null !== $k=array_shift($param)){
-				if(!isset($v[$k])) return $null;
-				$v = &$v[$k];
-			}
-			return $v;
-		}
-		if(!isset($this->keys[$id])){
-			$this[$id] = $this->create($id);
-		}
-		if (
-				isset($this->raw[$id])
-				|| !is_object($this->values[$id])
-				|| isset($this->protected[$this->values[$id]])
-				|| !method_exists($this->values[$id], '__invoke')
-		) {
-				$ref = &$this->values[$id];
-				return $ref;
-		}
-		if (isset($this->factories[$this->values[$id]])) {
-			return $this->values[$id]($this);
-		}
-		$raw = $this->values[$id];
-		$this->values[$id] = $raw($this);
-		$val = &$this->values[$id];
-		$this->raw[$id] = $raw;
-		$this->frozen[$id] = true;
-		return $val;
-	}
-	function offsetExists($id){
-		return isset($this->keys[$id]);
-	}
-	function offsetUnset($id){
-		if (isset($this->keys[$id])) {
-			if (is_object($this->values[$id])) {
-				unset($this->factories[$this->values[$id]], $this->protected[$this->values[$id]]);
-			}
-			unset($this->values[$id], $this->frozen[$id], $this->raw[$id], $this->keys[$id]);
-		}
-	}
-	function __set($k,$v){
-		$this->offsetSet($k,$v);
-	}
-	function __get($k){
-		return $this->offsetGet($k);
-	}
-	function __unset($k){
-		$this->offsetUnset($k);
-	}
-	function __isset($k){
-		$this->offsetExists($k);
-	}
-	function factory($callable){
-		if (!is_object($callable) || !method_exists($callable, '__invoke')) {
-			throw new \InvalidArgumentException('Service definition is not a Closure or invokable object.');
-		}
-		$this->factories->attach($callable);
-		return $callable;
-	}
-	function protect($callable){
-		if (!is_object($callable) || !method_exists($callable, '__invoke')) {
-			throw new \InvalidArgumentException('Callable is not a Closure or invokable object.');
-		}
-		$this->protected->attach($callable);
-		return $callable;
-	}
-	function raw($id){
-		if (!isset($this->keys[$id])) {
-			throw new \InvalidArgumentException(sprintf('Identifier "%s" is not defined.', $id));
-		}
-		if (isset($this->raw[$id])) {
-			return $this->raw[$id];
-		}
-		return $this->values[$id];
-	}
-	function extend($id, $callable){
-		if (!isset($this->keys[$id])) {
-			throw new \InvalidArgumentException(sprintf('Identifier "%s" is not defined.', $id));
-		}
-		if (!is_object($this->values[$id]) || !method_exists($this->values[$id], '__invoke')) {
-			throw new \InvalidArgumentException(sprintf('Identifier "%s" does not contain an object definition.', $id));
-		}
-		if (!is_object($callable) || !method_exists($callable, '__invoke')) {
-			throw new \InvalidArgumentException('Extension service definition is not a Closure or invokable object.');
-		}
-		$factory = $this->values[$id];
-		$extended = function ($c) use ($callable, $factory) {
-			return $callable($factory($c), $c);
-		};
-		if (isset($this->factories[$factory])) {
-			$this->factories->detach($factory);
-			$this->factories->attach($extended);
-		}
-		return $this[$id] = $extended;
-	}
-	function keys(){
-		return array_keys($this->values);
 	}
 	
-	function objectify($a){
-		if(is_object($a))
-			return $a;
-		if(is_array($a)){
-			if(is_array($a[0])){
-				$a[0] = $this->objectify($a[0]);
-				return $a;
-			}
-			else{
-				$args = $a;
-				$s = array_shift($args);
-			}
-		}
-		else{
-			$args = [];
-			$s = $a;
-		}
-		if(is_string($s)&&strpos($s,'new:')===0)
-			$a = $this->create(substr($s,4),$args);
-		return $a;
-	}
 	function extendRule($name, $key, $value, $push = null){
 		if(!isset($push))
 			$push = is_array($this->rules['*'][$key]);
@@ -289,7 +108,7 @@ class Di implements \ArrayAccess{
 		return $rule;
 	}
 
-	function create($name, $args = [], $forceNewInstance = false, $share = []){
+	function get($name, $args = [], $forceNewInstance = false, $share = []){
 		if(!is_array($args))
 			$args = (array)$args;
 		$instance = $name;
@@ -316,7 +135,7 @@ class Di implements \ArrayAccess{
 	}
 	function methodGetParams($object,$func,array $args=[]){
 		if(!is_object($object))
-			$object = call_user_func_array([$this,'create'],(array)$object);
+			$object = call_user_func_array([$this,'get'],(array)$object);
 		$class = get_class($object);
 		$reflectionClass = new \ReflectionClass($class);
 		return $this->getParams($reflectionClass->getMethod($func), $this->getRule($class))->__invoke($this->expand($args),[],false);
@@ -454,7 +273,7 @@ class Di implements \ArrayAccess{
 					}
 					else{
 						$new = in_array($v,$rule['newInstances']);
-						$shareInstances[] = $this->create($v,[],$new);
+						$shareInstances[] = $this->get($v,[],$new);
 					}
 				}
 				$share = array_merge($share, $shareInstances);
@@ -494,14 +313,14 @@ class Di implements \ArrayAccess{
 					}
 					if($sub){
 						if(is_string($rule['substitutions'][$class]))
-							$parameters[$j] = $this->create($rule['substitutions'][$class],[],false,$share);
+							$parameters[$j] = $this->get($rule['substitutions'][$class],[],false,$share);
 						elseif($rule['substitutions'][$class] instanceof ExpanderInterface)
 							$parameters[$j] = $rule['substitutions'][$class]->__invoke($this,$share);
 						else
 							$parameters[$j] = $rule['substitutions'][$class];
 					}
 					else{
-						$parameters[$j] = $this->create($class, [], $new, $share);
+						$parameters[$j] = $this->get($class, [], $new, $share);
 					}
 				}
 				elseif(!empty($args)){
@@ -524,201 +343,9 @@ class Di implements \ArrayAccess{
 			return $parameters;
 		};
 	}
-	function loadPhp($php){
-		$php = $this->phpLoadFile($php);
-		if(isset($php['$']))
-			foreach($php['$'] as $key=>$value)
-				$this[$key] = $value;
-		if(isset($php['rules']))
-			foreach($php['rules'] as $key=>$value)
-				$this->defineClass($key,$value);
-	}
-	function loadPhpMap(array $map){
-		foreach(array_reverse($map) as $file){ //preload for $vars transmission
-			$this->phpLoadFileCache($file);
-		}
-		
-		$php = $this->phpLoadFile(array_shift($map));
-		$mergeConfig = &$php['$']['mergeConfig'];
-		$mergeConfig = array_merge($map,isset($mergeConfig)?(array)$mergeConfig:[]);
-		foreach($mergeConfig as $k=>$v){
-			if($v = realpath($v)){
-				$mergeConfig[$k] = $v;
-			}
-		}
-		$mergeConfig = array_unique($mergeConfig);
-		$this->loadPhpVar($php);
-		$this->loadPhpClass($php);
-	}
-	function loadPhpVar($php){
-		if(isset($php['$'])){
-			$merge = isset($php['$']['mergeConfig'])?$php['$']['mergeConfig']:false;
-			if($merge){
-				$merge = array_map([$this,'phpLoadFile'],(array)$merge);
-				array_map([$this,'loadPhpVar'],$merge);
-				array_unshift($this->mapMerge,$merge);
-			}
-			$this->recursiveResolveVar($php['$']);
-			foreach($php['$'] as $key=>$value){
-				$fc = substr($key,0,1);
-				switch($fc){
-					case ':':
-						$key = substr($key,1);
-						if(isset($this[$key])&&is_array($this[$key])){
-							$this[$key] = self::merge_recursive($this[$key],$value);
-							continue 2;
-						}
-					break;
-					case '+':
-						$key = substr($key,1);
-						if(isset($this[$key])&&is_array($this[$key])){
-							$this[$key] = array_merge($this[$key],$value);
-							continue 2;
-						}
-					break;
-					case '!':
-						$key = substr($key,1);
-						if(isset($this[$key])){
-							if(is_array($this[$key])){
-								$this[$key] = self::merge_recursive($value,$this[$key]);
-							}
-							continue 2;
-						}
-					break;
-				}
-				$this[$key] = $value;
-			}
-			if($merge){
-				array_map([$this,'loadPhpVar'],$merge);
-			}
-		}
-	}
-	protected function recursiveResolveVar(&$var){
-		if(is_array($var)){
-			foreach($var as $k=>&$v){
-				if(strpos($k,'$')===0){
-					unset($var[$k]);
-					$k = substr($k,1);
-					$var[$k] = $this->getDotOffset($v);
-				}
-				if(is_array($v)){
-					$this->recursiveResolveVar($v);
-				}
-			}
-		}
-	}
-	function loadPhpClass($php){		
-		if(isset($php['rules']))
-			foreach($php['rules'] as $key=>$value)
-				$this->defineClass($key,$value);
-		
-		$mapMerge = $this->mapMerge;
-		$this->mapMerge = [];
-		foreach($mapMerge as $map){
-			array_map([$this,'loadPhpClass'],$map);
-		}
-	}
-	private function phpLoadFileCache($php){
-		if(!isset($this->phpCacheFile[$php])){
-			if(is_file($php)){
-				list($content,$vars) = includeConfig($php,$this->configVarsTmp);
-				$this->configVarsTmp = $vars+$this->configVarsTmp;
-				$this->phpCacheFile[$php] = $content;
-			}
-			else{
-				$this->phpCacheFile[$php] = [];
-			}
-		}
-		return $this->phpCacheFile[$php];
-	}
-	private function phpLoadFile($php){
-		$php = $this->phpLoadFileCache($php);
-		if($php instanceof \Closure){
-			$reflectionFunction = new \ReflectionFunction($php);
-			$args = [];
-			foreach($reflectionFunction->getParameters() as $param){
-				$k = $param->getName();
-				$args[] = isset($this->configVarsTmp[$k])?$this->configVarsTmp[$k]:null;
-			}
-			$php = call_user_func_array($php,$args);
-		}
-		return $php;
-	}
-	function defineClass($class,$rule){
-		if(isset($rule['instanceOf'])&&is_string($rule['instanceOf'])){
-			$rule['instanceOf'] = str_replace('/','\\',$rule['instanceOf']);
-		}
-		elseif(isset($rule['$instanceOf'])&&is_string($rule['$instanceOf'])){
-			$rule['instanceOf'] = $this->getDotOffset($rule['$instanceOf']);
-			unset($rule['$instanceOf']);
-		}
-		if(isset($rule['newInstances'])&&is_string($rule['newInstances']))
-			$rule['newInstances'] = explode(',',str_replace('/','\\',$rule['newInstances']));
-		if(isset($rule['shareInstances'])&&is_string($rule['shareInstances']))
-			$rule['shareInstances'] = explode(',',str_replace('/','\\',$rule['shareInstances']));
-		if (isset($rule['substitutions'])){
-			$substitutions = $rule['substitutions'];
-			$rule['substitutions'] = [];
-			foreach ($substitutions as $as=>$use){
-				if(substr($as,0,1)==='$'){
-					$as = substr($as,1);
-					$use = $this->getDotOffset($use);
-				}
-				$rule['substitutions'][str_replace('/','\\',$as)] = is_string($use)?str_replace('/','\\',$use):$use;
-			}
-		}
-		if(isset($rule['construct'])){
-			$construct = $rule['construct'];
-			$rule['construct'] = [];
-			foreach($construct as $key=>$param){
-				if(substr($key,0,1)==='$'){
-					$key = substr($key,1);
-					$param = $this->getDotOffset($param);
-				}
-				$rule['construct'][$key] = $param;
-			}
-		}
-		if(isset($rule['call'])){
-			$construct = $rule['call'];
-			$rule['call'] = [];
-			foreach($construct as $key=>$param){
-				if(substr($key,0,1)==='$'){
-					$key = substr($key,1);
-					$param = $this->getDotOffset($param);
-				}
-				$rule['call'][$key] = $param;
-			}
-		}
-		$this->addRule($class, $rule);
-	}
-	function getDotOffset($param){
-		$param = explode('.',$param);
-		$k = array_shift($param);
-		if(!isset($this->keys[$k])) return;
-		$v = $this->offsetGet($k);				
-		while(null !== $k=array_shift($param)){
-			if(!isset($v[$k])) return;
-			$v = $v[$k];
-		}
-		return $v;
-	}
-	function buildCallbackFromString($str){
-		$dic = $this;
-		return new ExpanderInterface(function()use($dic,$str){
-			$parts = explode('::', $str);
-			$object = $dic->create(array_shift($parts));
-			while ($var = array_shift($parts)){
-				if (strpos($var, '(') !== false) {
-					$args = explode(',', substr($var, strpos($var, '(')+1, strpos($var, ')')-strpos($var, '(')-1));
-					$object = call_user_func_array([$object, substr($var, 0, strpos($var, '('))], ($args[0] == null) ? [] : $args);
-				}
-				else $object = $object->$var;
-			}
-			return $object;
-		});
-	}
+	
 	function __invoke($name, $args = [], $forceNewInstance = false, $share = []){
-		return $this->create($name, $args, $forceNewInstance, $share);
+		return $this->get($name, $args, $forceNewInstance, $share);
 	}
 	private function hashArguments($args){
 		if(!isset($this->hashArgumentsStorage))
@@ -758,9 +385,4 @@ class Di implements \ArrayAccess{
 		}
 		return $merged;
 	}
-}
-function includeConfig(){
-	if(func_num_args()>1&&count(func_get_arg(1)))
-		extract(func_get_arg(1));
-	return [include(func_get_arg(0)),get_defined_vars()];
 }
