@@ -367,7 +367,7 @@ class Di{
 		}
 		return sha1(implode('.',$hash));
 	}
-	private static function merge_recursive(){
+	protected static function merge_recursive(){
 		$args = func_get_args();
 		$merged = array_shift($args);
 		foreach($args as $array2){
