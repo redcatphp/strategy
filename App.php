@@ -376,10 +376,10 @@ class App extends Di implements \ArrayAccess{
 		});
 	}
 	
-	function includeConfig(){
-		if(func_num_args()>1&&count(func_get_arg(1)))
-			extract(func_get_arg(1));
-		return [include(func_get_arg(0)),get_defined_vars()];
-	}
 	
+}
+function includeConfig(){
+	if(func_num_args()>1&&count(func_get_arg(1)))
+		extract(func_get_arg(1));
+	return [include(func_get_arg(0)),get_defined_vars()];
 }
