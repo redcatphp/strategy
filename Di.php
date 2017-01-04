@@ -105,6 +105,17 @@ class Di{
 		elseif(!$validClassName){
 			return false;
 		}
+		
+		if(isset($rule['instanceOf'])){
+			$instanceOf = $rule['instanceOf'];
+			while($r = $this->getRule($rule['instanceOf'])){
+				if(isset($r['instanceOf'])){
+					$rule['instanceOf'] = $r['instanceOf'];
+					break;
+				}
+			}
+		}
+		
 		return $rule;
 	}
 
