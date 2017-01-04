@@ -17,6 +17,7 @@
 
 namespace RedCat\Strategy;
 
+use LogicException;
 use ReflectionException;
 use RuntimeException;
 
@@ -111,12 +112,24 @@ class Di{
 		
 		if(isset($rule['instanceOf'])){
 			$instanceOf = $rule['instanceOf'];
-			while($r = $this->getRule($rule['instanceOf'])){
-				if(isset($r['instanceOf'])){
-					$rule['instanceOf'] = $r['instanceOf'];
-					break;
+			$stack = [$instanceOf];
+			while( isset($this->rules[$instanceOf]['instanceOf']) ){
+				$instanceOf = $this->rules[$instanceOf]['instanceOf'];
+				if(in_array($instanceOf,$stack)){ //avoid infinite loop
+					
+					$expected = $instanceOf;
+					do{ //resolve infinite loop if possible by interface or alias name breaker
+						if(!$this->validateClassName($instanceOf)||interface_exists($instanceOf)){
+							$instanceOf = $this->rules[$instanceOf]['instanceOf'];
+							break 2;
+						}
+					}while($instanceOf = array_pop($stack));
+					
+					throw new LogicException("cyclic instanceOf reference for class '$name' expected as instance of '$expected'");
 				}
+				$stack[] = $instanceOf;
 			}
+			$rule['instanceOf'] = $instanceOf;
 		}
 		
 		return $rule;
