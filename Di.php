@@ -9,7 +9,7 @@
  *		full registry implementation
  * 
  * @package Strategy
- * @version 5.0.0
+ * @version 5.0.1
  * @link http://github.com/redcatphp/Strategy/
  * @author Jo Surikat <jo@surikat.pro>
  * @website http://redcatphp.com
