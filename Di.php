@@ -17,6 +17,9 @@
 
 namespace RedCat\Strategy;
 
+use ReflectionException;
+use RuntimeException;
+
 class Di{
 	private $php7;
 	private $hashArgumentsStorage;
@@ -237,7 +240,7 @@ class Di{
 					$classObject = $param->getClass();
 					$class = $classObject?$classObject->name:null;
 				}
-				catch(\ReflectionException $e){
+				catch(ReflectionException $e){
 					if($param->allowsNull()) $class = null;
 					else throw $e;
 				}
@@ -258,7 +261,7 @@ class Di{
 			}
 			elseif($class){
 				if($param->allowsNull()) $class = null;
-				else throw new \Exception('Class '.$class.' does not exist');
+				else throw new RuntimeException('Class '.$class.' does not exist');
 			}
 			$paramName = $param->getName();
 			if(isset($rule['method'][$method->name][$paramName])){
