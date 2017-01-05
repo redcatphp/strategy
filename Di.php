@@ -118,7 +118,7 @@ class Di{
 		while( isset($this->rules[$alias]) && isset($this->rules[$alias]['alias']) ){
 			$r = $this->rules[$alias];
 			$alias = $r['alias'];
-			if(current($stack)==$alias)
+			if(end($stack)==$alias)
 				break;
 			if(in_array($alias,$stack)){
 				throw new LogicException("cyclic instanceOf reference for class '$name' expected as instance of '$alias'");
