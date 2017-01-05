@@ -81,7 +81,7 @@ class Di{
 	function validateClassName($name){
 		return preg_match('(^(?>[a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*\\\\?)+$)', $name);
 	}
-	function getRule($name){
+	function getRule($name, $noInstanceOf=false){
 		$rules = $this->rules;
 		$rule = $rules['*'];
 		unset($rules['*']);
@@ -109,37 +109,72 @@ class Di{
 		elseif(!$validClassName){
 			return false;
 		}
-		if(isset($rule['instanceOf'])){
-			$instanceOf = $rule['instanceOf'];
-			$expected = $instanceOf;
-			$stack = [];
-			$r = $rule;
-			while( isset($r['instanceOf']) && isset($this->rules[$instanceOf]) ){
-				$r = $this->rules[$instanceOf];
-				$rule = self::merge_recursive($r, $rule);
-				if(in_array($instanceOf,$stack)){ //avoid infinite loop
-					
-					do{ //resolve infinite loop if possible by interface or alias name breaker
-						if(!$this->validateClassName($instanceOf)||interface_exists($instanceOf)){
-							$instanceOf = $this->rules[$instanceOf]['instanceOf'];
-							break 2;
-						}
-					}while($instanceOf = array_pop($stack));
-					throw new LogicException("cyclic instanceOf reference for class '$name' expected as instance of '$expected'");
-				}
-				$stack[] = $instanceOf;
-				if(isset($r['instanceOf'])){
-					$instanceOf = $r['instanceOf'];
-				}
+		if(isset($rule['instanceOf'])&&!$noInstanceOf){
+			$instanceOf = $this->resolveInstanceOf($name, $rule);
+			if($instanceOf){
+				$rule['instanceOf'] = $instanceOf;
 			}
-			$rule['instanceOf'] = $instanceOf;
 		}
 		return $rule;
 	}
-
+	
+	protected function resolveInstanceOfName($name){
+		if(!isset($this->rules[$name])) return $name;
+		$r = $this->rules[$name];
+		if(!isset($r['instanceOf'])) return $name;
+		$instanceOf = $r['instanceOf'];
+		$expected = $instanceOf;
+		$stack = [];
+		while( isset($r['instanceOf']) && isset($this->rules[$instanceOf]) ){
+			$instanceOf = $r['instanceOf'];
+			if(in_array($instanceOf,$stack)){
+				do{
+					if(!$this->validateClassName($instanceOf)||interface_exists($instanceOf)){
+						$name = $instanceOf;
+						d($name);
+						break 2;
+					}
+				}while($instanceOf = array_pop($stack));
+				
+				throw new LogicException("cyclic instanceOf reference for class '$name' expected as instance of '$expected'");
+			}
+			$stack[] = $instanceOf;
+			$r = $this->rules[$instanceOf];
+		}
+		return $name;
+	}
+	protected function resolveInstanceOf($name, &$rule = null){
+		if(!isset($this->rules[$name])) return;
+		$r = $this->rules[$name];
+		$instanceOf = $r['instanceOf'];
+		$expected = $instanceOf;
+		$stack = [];
+		while( isset($r['instanceOf']) && isset($this->rules[$instanceOf]) ){
+			$instanceOf = $r['instanceOf'];
+			if(in_array($instanceOf,$stack)){ //avoid infinite loop
+				
+				do{ //resolve infinite loop if possible by interface or alias name breaker
+					if(!$this->validateClassName($instanceOf)||interface_exists($instanceOf)){
+						$instanceOf = $this->rules[$instanceOf]['instanceOf'];
+						if(isset($rule)){
+							$rule = self::merge_recursive($this->getRule($instanceOf, true), $rule);
+						}
+						break 2;
+					}
+				}while($instanceOf = array_pop($stack));
+				
+				throw new LogicException("cyclic instanceOf reference for class '$name' expected as instance of '$expected'");
+			}
+			$stack[] = $instanceOf;
+			$r = $this->rules[$instanceOf];
+		}
+		return $instanceOf;
+	}
+	
 	function get($name, $args = [], $forceNewInstance = false, $share = []){
 		if(!is_array($args))
 			$args = (array)$args;
+		$name = $this->resolveInstanceOfName($name);
 		$instance = $name;
 		if($p=strpos($name,':')){
 			$this->addRule($name,['instanceOf'=>substr($name,0,$p),'shared'=>true]);
