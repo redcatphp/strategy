@@ -109,29 +109,32 @@ class Di{
 		elseif(!$validClassName){
 			return false;
 		}
-		
 		if(isset($rule['instanceOf'])){
 			$instanceOf = $rule['instanceOf'];
-			$stack = [$instanceOf];
-			while( isset($this->rules[$instanceOf]['instanceOf']) ){
-				$instanceOf = $this->rules[$instanceOf]['instanceOf'];
+			$expected = $instanceOf;
+			$stack = [];
+			$r = $rule;
+			while( isset($r['instanceOf']) && isset($this->rules[$instanceOf]) ){
+				$r = $this->rules[$instanceOf];
+				$rule = self::merge_recursive($r, $rule);
 				if(in_array($instanceOf,$stack)){ //avoid infinite loop
 					
-					$expected = $instanceOf;
 					do{ //resolve infinite loop if possible by interface or alias name breaker
 						if(!$this->validateClassName($instanceOf)||interface_exists($instanceOf)){
 							$instanceOf = $this->rules[$instanceOf]['instanceOf'];
+							//dd($name,$rule,$instanceOf,$stack);
 							break 2;
 						}
 					}while($instanceOf = array_pop($stack));
-					
 					throw new LogicException("cyclic instanceOf reference for class '$name' expected as instance of '$expected'");
 				}
 				$stack[] = $instanceOf;
+				if(isset($r['instanceOf'])){
+					$instanceOf = $r['instanceOf'];
+				}
 			}
 			$rule['instanceOf'] = $instanceOf;
 		}
-		
 		return $rule;
 	}
 
