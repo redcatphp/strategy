@@ -131,7 +131,6 @@ class Di{
 				do{
 					if(!$this->validateClassName($instanceOf)||interface_exists($instanceOf)){
 						$name = $instanceOf;
-						d($name);
 						break 2;
 					}
 				}while($instanceOf = array_pop($stack));
