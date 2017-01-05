@@ -82,6 +82,7 @@ class Di{
 		return preg_match('(^(?>[a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*\\\\?)+$)', $name);
 	}
 	function getRule($name, $noInstanceOf=false){
+		$name = $this->resolveAlias($name);
 		$rules = $this->rules;
 		$rule = $rules['*'];
 		unset($rules['*']);
