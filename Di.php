@@ -112,35 +112,26 @@ class Di{
 		return $rule;
 	}
 	
-	protected function resolveInstanceOfName($name){
-		if(!isset($this->rules[$name])) return $name;
-		$r = $this->rules[$name];
-		if(!isset($r['instanceOf'])) return $name;
-		$instanceOf = $r['instanceOf'];
-		$expected = $instanceOf;
+	protected function resolveAlias($name){
 		$stack = [];
-		while( isset($r['instanceOf']) && isset($this->rules[$instanceOf]) ){
-			$instanceOf = $r['instanceOf'];
-			if(in_array($instanceOf,$stack)){
-				do{
-					if(!$this->validateClassName($instanceOf)||interface_exists($instanceOf)){
-						$name = $instanceOf;
-						break 2;
-					}
-				}while($instanceOf = array_pop($stack));
-				
-				throw new LogicException("cyclic instanceOf reference for class '$name' expected as instance of '$expected'");
+		$alias = $name;
+		while( isset($this->rules[$alias]) && isset($this->rules[$alias]['alias']) ){
+			$r = $this->rules[$alias];
+			$alias = $r['alias'];
+			if(current($stack)==$alias)
+				break;
+			if(in_array($alias,$stack)){
+				throw new LogicException("cyclic instanceOf reference for class '$name' expected as instance of '$alias'");
 			}
-			$stack[] = $instanceOf;
-			$r = $this->rules[$instanceOf];
+			$stack[] = $alias;
 		}
-		return $name;
+		return $alias;
 	}
 	
 	function get($name, $args = [], $forceNewInstance = false, $share = []){
 		if(!is_array($args))
 			$args = (array)$args;
-		$name = $this->resolveInstanceOfName($name);
+		$name = $this->resolveAlias($name);
 		$instance = $name;
 		if($p=strpos($name,':')){
 			$this->addRule($name,['instanceOf'=>substr($name,0,$p),'shared'=>true]);
