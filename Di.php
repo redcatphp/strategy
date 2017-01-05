@@ -122,7 +122,6 @@ class Di{
 					do{ //resolve infinite loop if possible by interface or alias name breaker
 						if(!$this->validateClassName($instanceOf)||interface_exists($instanceOf)){
 							$instanceOf = $this->rules[$instanceOf]['instanceOf'];
-							//dd($name,$rule,$instanceOf,$stack);
 							break 2;
 						}
 					}while($instanceOf = array_pop($stack));
@@ -147,7 +146,8 @@ class Di{
 			if(substr($instance,$p+1)==='#')
 				$instance = $name.':'.$this->hashArguments($args);
 		}
-		if(!$forceNewInstance&&isset($this->instances[$instance])) return $this->instances[$instance];
+		if(!$forceNewInstance&&isset($this->instances[$instance]))
+			return $this->instances[$instance];
 		$rule = $this->getRule($name);
 		if(!$rule)
 			return;
